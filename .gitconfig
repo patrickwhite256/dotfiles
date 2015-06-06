@@ -1,0 +1,21 @@
+[user]
+	name = Patrick White
+	email = patrickwhite.256@gmail.com
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    lg = log --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)'
+[core]
+	excludesfile = /home/patrick/global_gitignore
+    editor = vim
+[merge]
+    tool = vimdiff
+[diff]
+    mnemonicprefix = true
+[difftool]
+    prompt = false
+[push]
+	default = simple
+[pull]
+    rebase = true

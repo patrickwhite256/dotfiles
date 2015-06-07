@@ -9,7 +9,7 @@ check_virtualenv() {
         workon $env
         VENV_ROOT=$(pwd)
     elif [ -n "$VENV_ROOT" ]; then
-        if [ "$(pwd)" != *"$VENV_ROOT"* ]; then
+        if [[ "$(pwd)" != *"$VENV_ROOT"* ]]; then
             deactivate
             unset VENV_ROOT
         fi

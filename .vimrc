@@ -39,8 +39,8 @@ set updatetime=750
 
 colorscheme badwolf
 
-map <C-K> :tabp<CR>
-map <C-J> :tabn<CR>
+map <C-K> :bn<CR>
+map <C-J> :bp<CR>
 map <C-X> :bd<CR>
 
 if bufwinnr(1)
@@ -75,3 +75,4 @@ let g:airline_symbols.branch = '⎇'
 map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 let NERDTreeIgnore=['\.pyc$','__pycache__']
+let NERDTreeQuitOnOpen=1

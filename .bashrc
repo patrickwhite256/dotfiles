@@ -23,9 +23,9 @@ venv_cd() {
 # almost entirely stolen from @ke2mcbri
 hpick() {
     if [ -z $@ ]; then
-        CMD=$(history | grep -v hpick | tr -s ' ' | cut -d' ' -f3- | uniq | pick)
+        CMD=$(history | grep -v hpick | tr -s ' ' | cut -d' ' -f3- | sort | uniq | pick)
     else
-        CMD=$(history | grep -v hpick | grep $@ | tr -s ' ' | cut -d' ' -f3- | uniq | pick)
+        CMD=$(history | grep -v hpick | grep $@ | tr -s ' ' | cut -d' ' -f3- | sort | uniq | pick)
     fi
     echo "$CMD"
     history -s "$CMD"

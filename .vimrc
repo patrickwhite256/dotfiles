@@ -36,6 +36,7 @@ set nowrap
 set nu
 set hlsearch
 set updatetime=750
+set hidden
 
 colorscheme badwolf
 

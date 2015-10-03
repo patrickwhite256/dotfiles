@@ -4,10 +4,15 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 check_virtualenv() {
     if [ -e .venv ]; then
-        env=$(cat .venv)
-        echo "Working on ${env}"
-        workon $env
-        VENV_ROOT=$(pwd)
+        if [ -d .venv ]; then
+            echo "Working on .venv"
+            source .venv/bin/activate
+        else
+            env=$(cat .venv)
+            echo "Working on ${env}"
+            workon $env
+        fi
+        VENV_ROOT="$(pwd)"
     elif [ -n "$VENV_ROOT" ]; then
         if [[ "$(pwd)" != *"$VENV_ROOT"* ]]; then
             deactivate

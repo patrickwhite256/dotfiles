@@ -1,4 +1,6 @@
 .venv
 deploy.sh
-.pyc
+*.pyc
 __pycache__
+*.o
+*.d

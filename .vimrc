@@ -6,6 +6,8 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'sjl/badwolf'
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'flxf/uCpp.vim'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-commentary'
@@ -43,6 +45,11 @@ colorscheme badwolf
 map <C-K> :bn<CR>
 map <C-J> :bp<CR>
 map <C-X> :bd<CR>
+map <leader>k :tabn<CR>
+map <leader>j :tabp<CR>
+map <leader>x :tabclose<CR>
+
+map <C-L> :redraw!<CR> :noh<CR>
 
 if bufwinnr(1)
     map + <C-W>+
@@ -77,3 +84,7 @@ map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 let NERDTreeIgnore=['\.pyc$','__pycache__']
 let NERDTreeQuitOnOpen=1
+
+let g:syntastic_cpp_compiler = 'u++'
+let g:syntastic_mode_map = {'passive_filetypes': ['python']}
+let g:syntastic_always_populate_loc_list = 1

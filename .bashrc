@@ -1,5 +1,6 @@
 VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 PATH=$PATH:/home/patrick/workspace/llvm/build/Release/bin:$HOME/bin
+EDITOR=vim
 source /usr/local/bin/virtualenvwrapper.sh
 
 check_virtualenv() {

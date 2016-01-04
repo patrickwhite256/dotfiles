@@ -14,6 +14,7 @@ Plugin 'tpope/vim-commentary'
 Plugin 'nvie/vim-flake8.git'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'derekwyatt/vim-scala'
 call vundle#end()
 
 filetype plugin indent on

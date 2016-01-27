@@ -12,7 +12,7 @@
     df = diff --color-words
     root = rev-parse --show-toplevel
 [core]
-	excludesfile = /home/patrick/global_gitignore
+    excludesfile = ~/global_gitignore
     editor = vim
     pager = less -r
 [merge]
@@ -21,8 +21,6 @@
     mnemonicprefix = true
 [difftool]
     prompt = false
-[push]
-    default = simple
 [pull]
     rebase = true
 [color]

@@ -124,8 +124,15 @@ let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '◀'
+
+" it's such a pain getting the triangles to work
+let supports_triangles = $SUPPORTS_TRIANGLES
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+if exists('supports_powerline')
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '◀'
+endif
 let g:airline_symbols.branch = '⎇'
 
 """Nerdtree configuration

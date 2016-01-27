@@ -49,6 +49,20 @@ hpick() {
     eval "$CMD"
 }
 
+# Assumption is you've already set up ssh configs such that you can just
+# type "ssh server" but it doesn't feel like home
+# This changes that
+make-it-feel-like-home() {
+    server=$1
+    if [ -z "$server" ]; then
+        echo "Usage: make-it-feel-like-home SERVER"
+        return
+    fi
+    dotfiles_dir=$(dirname $(readlink $HOME/.bashrc))
+    scp -r $dotfiles_dir $server:~/dotfiles
+    ssh $server "cd ~/dotfiles && make"
+}
+
 check_virtualenv
 
 source ~/.bash_aliases

@@ -1,3 +1,5 @@
+" Plugins
+
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -20,6 +22,8 @@ call vundle#end()
 filetype plugin indent on
 syntax on
 
+"General Config
+
 set encoding=utf8
 set t_Co=256
 
@@ -41,7 +45,45 @@ set hlsearch
 set updatetime=750
 set hidden
 
-colorscheme badwolf
+silent! colorscheme badwolf
+
+highlight OverLength ctermbg=7 ctermfg=black guibg=#592929
+match OverLength /\%81v.\+/
+""""""""""""""""""""""""""""""""for testing above""""""""""""""""""""""""""""""""""""""""""""
+
+"""functions to toggle quickfix window/location list/neither
+"""adapted from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
+function! GetBufferList()
+  redir =>buflist
+  silent! ls!
+  redir END
+  return buflist
+endfunction
+
+function! ToggleList()
+  let buflist = GetBufferList()
+"  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Quickfix List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+"    if bufwinnr(bufnum) != -1
+"      exec('cclose')
+"      exec('lopen')
+"      return
+"    endif
+"  endfor
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec('lclose')
+      return
+    endif
+  endfor
+"  exec('copen')
+  exec('lopen')
+endfunction
+
+nmap <silent> <F2> :call ToggleList()<CR>
+
+"Mappings
+
+nnoremap Y y$
 
 map <C-K> :bn<CR>
 map <C-J> :bp<CR>
@@ -50,7 +92,8 @@ map <leader>k :tabn<CR>
 map <leader>j :tabp<CR>
 map <leader>x :tabclose<CR>
 
-map <C-L> :redraw!<CR> :noh<CR>
+map <C-L> :redraw!<CR>:noh<CR>
+nmap <F5> :execute "!markdown " expand("%") . " > " . expand("%:r") . ".html"<CR><CR>
 
 if bufwinnr(1)
     map + <C-W>+
@@ -58,13 +101,18 @@ if bufwinnr(1)
     map - <C-W>-
 endif
 
-highlight OverLength ctermbg=7 ctermfg=black guibg=#592929
-match OverLength /\%101v.\+/
-""""""""""""""""""""""""""""""""for testing above""""""""""""""""""""""""""""""""""""""""""""
+""" go to next/previous line with same indent
 
+nnoremap <leader>, :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%<' . line('.') . 'l\S', 'be')<CR>
+nnoremap <leader>. :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%>' . line('.') . 'l\S', 'e')<CR>
 
 """Flake8 configuration: nvie/vim-flake8
-autocmd BufWritePost *.py call Flake8()
+"nmap <F2> :call Flake8()<CR>
+"nmap <F4> :call flake8#Flake8UnplaceMarkers()<CR>
+"let g:flake8_show_quickfix = 0
+"let g:flake8_show_in_gutter = 1
+"autocmd BufWritePost *.py call Flake8()
+" superceded by pylint in syntastic
 
 """Airplane configuration
 set laststatus=2
@@ -86,6 +134,5 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 let NERDTreeIgnore=['\.pyc$','__pycache__']
 let NERDTreeQuitOnOpen=1
 
-let g:syntastic_cpp_compiler = 'u++'
-let g:syntastic_mode_map = {'passive_filetypes': ['python']}
+" let g:syntastic_mode_map = {'passive_filetypes': ['python']}
 let g:syntastic_always_populate_loc_list = 1

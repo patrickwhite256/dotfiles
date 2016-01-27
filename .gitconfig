@@ -5,10 +5,16 @@
     st = status
     ci = commit
     co = checkout
-    lg = log --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)'
+    logp = log -p --word-diff -n 3
+    lg = log -n 20 --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)'
+    lgall = log --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)'
+    delete-merged = "!git co master && git pull && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+    df = diff --color-words
+    root = rev-parse --show-toplevel
 [core]
 	excludesfile = /home/patrick/global_gitignore
     editor = vim
+    pager = less -r
 [merge]
     tool = vimdiff
 [diff]
@@ -16,7 +22,7 @@
 [difftool]
     prompt = false
 [push]
-	default = simple
+    default = simple
 [pull]
     rebase = true
 [color]

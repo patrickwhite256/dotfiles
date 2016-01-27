@@ -70,8 +70,9 @@ source ~/.bash_aliases
 Color_Off='\e[0m'       # Text Reset
 
 # Regular Colors
-Red="\e[0;31m"         # Red
+Red="\e[0;31m"          # Red
 Green="\e[0;32m"        # Green
+Cyan="\e[1;36m"         # Cyan (bold)
 
 branch_color() {
   if git diff --quiet 2>/dev/null >&2;
@@ -83,4 +84,19 @@ branch_color() {
   echo -ne $color
 }
 
+if [ -z "$SSH_TTY" ]; then
+    NOT_SSH=1
+fi
+
+host_color() {
+    if [ -z "$NOT_SSH" ]; then
+        echo -ne $Cyan
+    else
+        return
+    fi
+}
+
+# normal - with hax for ssh host colouring
+PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\[\$(host_color)\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]"
+# normal with git!
 PS1="$PS1\[\$(branch_color)\]\$(__git_ps1)\[\e[0m\] \$ "

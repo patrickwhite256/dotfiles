@@ -76,7 +76,7 @@ function! ToggleList()
     endif
   endfor
 "  exec('copen')
-  exec('lopen')
+  silent! exec('lopen')
 endfunction
 
 nmap <silent> <F2> :call ToggleList()<CR>

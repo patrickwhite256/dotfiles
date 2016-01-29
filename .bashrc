@@ -1,3 +1,6 @@
+# TODO:
+# - limit length of PWD in PS1
+
 if [ -e $HOME/.bashrc.local ]; then
     source $HOME/.bashrc.local
 fi
@@ -67,19 +70,21 @@ check_virtualenv
 
 source ~/.bash_aliases
 # Reset
-Color_Off='\e[0m'       # Text Reset
+rst='\e[0m'             # Text Reset
 
 # Regular Colors
-Red="\e[0;31m"          # Red
-Green="\e[0;32m"        # Green
-Cyan="\e[1;36m"         # Cyan (bold)
+red="\e[0;31m"          # Red
+gre="\e[0;32m"          # Green
+bcya="\e[1;36m"         # Cyan (bold)
+byel="\e[1;33m"         # Yellow (bold)
+bblu="\033[1;34m"         # Blue (bold)
 
 branch_color() {
   if git diff --quiet 2>/dev/null >&2;
   then
-    color=$Green
+    color=$gre
   else
-    color=$Red
+    color=$red
   fi
   echo -ne $color
 }
@@ -90,13 +95,52 @@ fi
 
 host_color() {
     if [ -z "$NOT_SSH" ]; then
-        echo -ne $Cyan
+        echo -ne $bcya
     else
         return
     fi
 }
 
-# normal - with hax for ssh host colouring
-PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\[\$(host_color)\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]"
-# normal with git!
+git_color_pwd() {
+    ROOT=$(basename $(git rev-parse --show-toplevel 2>/dev/null) 2>/dev/null)
+    ALT_PWD=${PWD/#$HOME/\~}
+    if [ -z $ROOT ]; then
+        echo -ne $bblu$ALT_PWD
+        return
+    fi
+    echo -ne "$bblu${ALT_PWD/$ROOT/$byel$ROOT$bblu}"
+}
+
+git_pwd_prefix() {
+    ROOT=$(basename $(git rev-parse --show-toplevel 2>/dev/null) 2>/dev/null)
+    ALT_PWD=${PWD/#$HOME/\~}
+    if [ -z $ROOT ]; then
+        echo -n $ALT_PWD
+        return
+    fi
+    echo -n ${ALT_PWD%%$ROOT*}
+}
+
+git_pwd_root() {
+    ROOT=$(basename $(git rev-parse --show-toplevel 2>/dev/null) 2>/dev/null)
+    echo -n $ROOT
+}
+
+git_pwd_postfix() {
+    ROOT=$(basename $(git rev-parse --show-toplevel 2>/dev/null) 2>/dev/null)
+    ALT_PWD=${PWD/#$HOME/\~}
+    if [ -z $ROOT ]; then
+        return
+    fi
+    echo -n ${ALT_PWD##*$ROOT}
+}
+
+# debian chroot
+PS1="${debian_chroot:+($debian_chroot)}"
+# user@host
+PS1="$PS1\[\033[01;32m\]\u@\[\$(host_color)\]\h\[\033[00m\]"
+# working dir
+PS1="$PS1:\[$bblu\]\$(git_pwd_prefix)\[$byel\]\$(git_pwd_root)\[$bblu\]\$(git_pwd_postfix)"
+#PS1="$PS1:\[\033[01;34m\]\w\[\\033[0m\]" # BOOOOORIIING
+# git
 PS1="$PS1\[\$(branch_color)\]\$(__git_ps1)\[\e[0m\] \$ "

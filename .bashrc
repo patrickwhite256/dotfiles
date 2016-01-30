@@ -132,7 +132,7 @@ git_pwd_postfix() {
     if [ -z $ROOT ]; then
         return
     fi
-    echo -n ${ALT_PWD##*$ROOT}
+    echo -n ${ALT_PWD#*$ROOT}
 }
 
 # debian chroot

@@ -4,3 +4,4 @@ deploy.sh
 __pycache__
 *.o
 *.d
+*.zip

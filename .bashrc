@@ -72,12 +72,15 @@ source ~/.bash_aliases
 # Reset
 rst='\e[0m'             # Text Reset
 
-# Regular Colors
-red="\e[0;31m"          # Red
-gre="\e[0;32m"          # Green
-bcya="\e[1;36m"         # Cyan (bold)
-byel="\e[1;33m"         # Yellow (bold)
-bblu="\033[1;34m"         # Blue (bold)
+# Regular Colours
+red='\e[0;31m'        # Red
+gre='\e[0;32m'        # Green
+
+# Bold Colours
+bcya='\e[1;36m'       # Cyan (bold)
+byel='\e[1;33m'       # Yellow (bold)
+bgre='\e[1;32m'       # Green (bold)
+bblu='\e[1;34m'       # Blue (bold)
 
 branch_color() {
   if git diff --quiet 2>/dev/null >&2;
@@ -99,16 +102,6 @@ host_color() {
     else
         return
     fi
-}
-
-git_color_pwd() {
-    ROOT=$(basename $(git rev-parse --show-toplevel 2>/dev/null) 2>/dev/null)
-    ALT_PWD=${PWD/#$HOME/\~}
-    if [ -z $ROOT ]; then
-        echo -ne $bblu$ALT_PWD
-        return
-    fi
-    echo -ne "$bblu${ALT_PWD/$ROOT/$byel$ROOT$bblu}"
 }
 
 git_pwd_prefix() {
@@ -138,9 +131,10 @@ git_pwd_postfix() {
 # debian chroot
 PS1="${debian_chroot:+($debian_chroot)}"
 # user@host
-PS1="$PS1\[\033[01;32m\]\u@\[\$(host_color)\]\h\[\033[00m\]"
+PS1="$PS1\[$bgre\]\u@\[\$(host_color)\]\h\[$rst\]"
 # working dir
 PS1="$PS1:\[$bblu\]\$(git_pwd_prefix)\[$byel\]\$(git_pwd_root)\[$bblu\]\$(git_pwd_postfix)"
-#PS1="$PS1:\[\033[01;34m\]\w\[\\033[0m\]" # BOOOOORIIING
 # git
-PS1="$PS1\[\$(branch_color)\]\$(__git_ps1)\[\e[0m\] \$ "
+PS1="$PS1\[\$(branch_color)\]\$(__git_ps1)\[$rst\] \$ "
+# enable for boring mode
+#PS1="\[$bgre\]\u@\h\[$rst\]:\[$bblu\]\w\[$rst\] \$ "

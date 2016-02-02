@@ -40,6 +40,8 @@ set autoindent
 set smartindent
 set nowrap
 
+autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 tabstop=2
+
 set nu
 set hlsearch
 set updatetime=750

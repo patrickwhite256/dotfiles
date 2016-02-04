@@ -103,18 +103,14 @@ if bufwinnr(1)
     map - <C-W>-
 endif
 
+"viewport scrolling is hella slow in default
+nnoremap <C-e> 5<C-e>
+nnoremap <C-y> 5<C-y>
+
 """ go to next/previous line with same indent
 
 nnoremap <leader>, :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%<' . line('.') . 'l\S', 'be')<CR>
 nnoremap <leader>. :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%>' . line('.') . 'l\S', 'e')<CR>
-
-"""Flake8 configuration: nvie/vim-flake8
-"nmap <F2> :call Flake8()<CR>
-"nmap <F4> :call flake8#Flake8UnplaceMarkers()<CR>
-"let g:flake8_show_quickfix = 0
-"let g:flake8_show_in_gutter = 1
-"autocmd BufWritePost *.py call Flake8()
-" superceded by pylint in syntastic
 
 """Airplane configuration
 set laststatus=2
@@ -128,10 +124,9 @@ if !exists('g:airline_symbols')
 endif
 
 " it's such a pain getting the triangles to work
-let supports_triangles = $SUPPORTS_TRIANGLES
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-if exists('supports_triangles')
+if exists($SUPPORTS_TRIANGLES)
     let g:airline_left_sep = '▶'
     let g:airline_right_sep = '◀'
 endif

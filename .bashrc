@@ -104,6 +104,18 @@ host_color() {
     fi
 }
 
+# TODO: this takes a bit of time, maybe cache result for 8h or something
+check_dotfiles_updates() {
+    dotfiles_dir=$(dirname $(readlink $HOME/.bashrc))
+    local_head=$(git -C $dotfiles_dir rev-parse HEAD)
+    remote_head=$(git -C $dotfiles_dir ls-remote origin | head -n 1 | cut -f1)
+    if [[ "$local_head" != "$remote_head" ]]; then
+        echo -ne "$byel"
+        echo -n "Dotfiles are out of date! To upgrade: git -C $dotfiles_dir pull"
+        echo -e "$rst"
+    fi
+}
+
 git_pwd_prefix() {
     ROOT=$(basename $(git rev-parse --show-toplevel 2>/dev/null) 2>/dev/null)
     ALT_PWD=${PWD/#$HOME/\~}
@@ -140,3 +152,4 @@ PS1="$PS1\[\$(branch_color)\]\$(__git_ps1)\[$rst\] \$ "
 #PS1="\[$bgre\]\u@\h\[$rst\]:\[$bblu\]\w\[$rst\] \$ "
 
 check_virtualenv
+check_dotfiles_updates

@@ -6,8 +6,8 @@
     ci = commit
     co = checkout
     logp = log -p --word-diff -n 3
-    lg = log -n 20 --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)'
-    lgall = log --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)'
+    lg = log -n 20 --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)%Creset'
+    lgall = log --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)%Creset'
     delete-merged = "!git co master && git pull && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
     df = diff --color-words
     root = rev-parse --show-toplevel

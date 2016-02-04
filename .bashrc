@@ -5,10 +5,10 @@ if [ -e $HOME/.bashrc.local ]; then
     source $HOME/.bashrc.local
 fi
 if [ -e /usr/local/bin/virtualenvwrapper.sh ]; then
-    source /usr/local/bin/virtualenvwrapper.sh
     VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    source /usr/local/bin/virtualenvwrapper.sh
 fi
-PATH=$PATH:/home/patrick/workspace/llvm/build/Release/bin:$HOME/bin
+PATH=$PATH:$HOME/workspace/llvm/build/Release/bin:$HOME/bin
 export EDITOR=vim
 
 check_virtualenv() {
@@ -138,3 +138,5 @@ PS1="$PS1:\[$bblu\]\$(git_pwd_prefix)\[$byel\]\$(git_pwd_root)\[$bblu\]\$(git_pw
 PS1="$PS1\[\$(branch_color)\]\$(__git_ps1)\[$rst\] \$ "
 # enable for boring mode
 #PS1="\[$bgre\]\u@\h\[$rst\]:\[$bblu\]\w\[$rst\] \$ "
+
+check_virtualenv

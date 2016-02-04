@@ -131,7 +131,7 @@ endif
 let supports_triangles = $SUPPORTS_TRIANGLES
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
-if exists('supports_powerline')
+if exists('supports_triangles')
     let g:airline_left_sep = '▶'
     let g:airline_right_sep = '◀'
 endif

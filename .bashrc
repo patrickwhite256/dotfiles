@@ -104,8 +104,15 @@ host_color() {
     fi
 }
 
-# TODO: this takes a bit of time, maybe cache result for 8h or something
 check_dotfiles_updates() {
+    # cache result for 8 hours
+    if [ -e ~/.dotfile_check ]; then
+        cur_date=$(date +%s)
+        mod_date=$(date +%s -r ~/.dotfile_check)
+        if (( $((cur_date - mod_date)) <= 28800 )); then
+            return
+        fi
+    fi
     dotfiles_dir=$(dirname $(readlink $HOME/.bashrc))
     local_head=$(cd $dotfiles_dir && git rev-parse HEAD)
     remote_head=$(cd $dotfiles_dir && git ls-remote origin | head -n 1 | cut -f1)
@@ -114,6 +121,7 @@ check_dotfiles_updates() {
         echo -n "Dotfiles are out of date! To upgrade: git -C $dotfiles_dir pull"
         echo -e "$rst"
     fi
+    touch ~/.dotfile_check
 }
 
 git_pwd_prefix() {

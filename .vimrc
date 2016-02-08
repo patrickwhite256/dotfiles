@@ -41,6 +41,7 @@ set smartindent
 set nowrap
 
 autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType php setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set nu
 set hlsearch
@@ -49,11 +50,15 @@ set hidden
 
 silent! colorscheme badwolf
 
-highlight OverLength ctermbg=7 ctermfg=black guibg=#592929
-match OverLength /\%81v.\+/
-""""""""""""""""""""""""""""""""for testing above""""""""""""""""""""""""""""""""""""""""""""
+" this is great, but it makes syntax impossible to read after 80 chars.
+" especially problematic when reading other people's code.
+"
+" highlight OverLength ctermbg=7 ctermfg=black guibg=#592929
+" match OverLength /\%81v.\+/
 
-"""functions to toggle quickfix window/location list/neither
+set colorcolumn=80
+
+"""functions to toggle location list
 """adapted from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
 function! GetBufferList()
   redir =>buflist
@@ -64,20 +69,12 @@ endfunction
 
 function! ToggleList()
   let buflist = GetBufferList()
-"  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Quickfix List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-"    if bufwinnr(bufnum) != -1
-"      exec('cclose')
-"      exec('lopen')
-"      return
-"    endif
-"  endfor
   for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "Location List"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
     if bufwinnr(bufnum) != -1
       exec('lclose')
       return
     endif
   endfor
-"  exec('copen')
   silent! exec('lopen')
 endfunction
 

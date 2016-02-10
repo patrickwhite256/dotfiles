@@ -110,6 +110,13 @@ nnoremap <C-y> 5<C-y>
 nnoremap <leader>, :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%<' . line('.') . 'l\S', 'be')<CR>
 nnoremap <leader>. :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%>' . line('.') . 'l\S', 'e')<CR>
 
+""" partially because i enjoy screwing with sublime text users
+
+nnoremap <Left> <C-w>h
+nnoremap <Down> <C-w>j
+nnoremap <Up> <C-w>k
+nnoremap <Right> <C-w>l
+
 """Airplane configuration
 set laststatus=2
 let g:airline_theme = 'simple'

@@ -118,7 +118,7 @@ check_dotfiles_updates() {
     remote_head=$(cd $dotfiles_dir && git ls-remote origin | head -n 1 | cut -f1)
     if [[ "$local_head" != "$remote_head" ]]; then
         echo -ne "$byel"
-        echo -n "Dotfiles are out of date! To upgrade: cd $dotfiles_dr && git pull"
+        echo -n "Dotfiles are out of date! To upgrade: cd $dotfiles_dir && git pull"
         echo -e "$rst"
     fi
     touch ~/.dotfile_check

@@ -66,6 +66,9 @@ make-it-feel-like-home() {
     ssh $server "cd ~/dotfiles && make"
 }
 
+set -o vi
+bind -m vi-insert "\C-l":clear-screen # why is this not default
+
 check_virtualenv
 
 source ~/.bash_aliases

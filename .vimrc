@@ -48,6 +48,8 @@ set nu
 set hlsearch
 set updatetime=750
 set hidden
+set ignorecase
+set smartcase
 
 silent! colorscheme badwolf
 

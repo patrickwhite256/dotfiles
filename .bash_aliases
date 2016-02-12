@@ -7,7 +7,7 @@ alias grep='grep -I --color=auto'
 alias clang++="clang++ -I/usr/local/include/c++/v1"
 alias tmux="deactivate || : && tmux -2"
 alias ll="ls -la"
-alias l="ls -a"
+alias l="ls -l"
 alias goroot="cd \$(git rev-parse --show-toplevel)"
 
 if [ -e ~/.bash_aliases.local ]; then

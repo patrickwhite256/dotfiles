@@ -8,7 +8,6 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'sjl/badwolf'
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
 Plugin 'flxf/uCpp.vim'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
@@ -18,6 +17,13 @@ Plugin 'nvie/vim-flake8.git'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'ctrlpvim/ctrlp.vim'
+
+if has('nvim')
+    Plugin 'benekastah/neomake'
+else
+    Plugin 'scrooloose/syntastic'
+end
 call vundle#end()
 
 filetype plugin indent on
@@ -50,6 +56,10 @@ set updatetime=750
 set hidden
 set ignorecase
 set smartcase
+set wildmenu
+set mouse=
+
+set wildignore+=*.pyc,__pycache__
 
 silent! colorscheme badwolf
 
@@ -95,6 +105,9 @@ map <leader>j :tabp<CR>
 map <leader>x :tabclose<CR>
 
 map <C-L> :redraw!<CR>:noh<CR>
+
+" this has no apparent neomake analogue yet
+nmap <silent> <F3> :SyntasticReset<CR>
 nmap <F5> :execute "!markdown " expand("%") . " > " . expand("%:r") . ".html"<CR><CR>
 
 if bufwinnr(1)
@@ -119,7 +132,7 @@ nnoremap <Down> <C-w>j
 nnoremap <Up> <C-w>k
 nnoremap <Right> <C-w>l
 
-"""Airplane configuration
+"""Airline configuration
 set laststatus=2
 let g:airline_theme = 'simple'
 let g:airline#extensions#tabline#enabled = 1
@@ -133,19 +146,32 @@ endif
 " it's such a pain getting the triangles to work
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_alt_sep = ''
 if exists($SUPPORTS_TRIANGLES)
     let g:airline_left_sep = '▶'
     let g:airline_right_sep = '◀'
+    let g:airline_left_alt_sep = '▶'
+    let g:airline_right_alt_sep = '◀'
 endif
 let g:airline_symbols.branch = '⎇'
 
 """Nerdtree configuration
 map <C-n> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd! bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 let NERDTreeIgnore=['\.pyc$','__pycache__']
 let NERDTreeQuitOnOpen=1
 
-" let g:syntastic_mode_map = {'passive_filetypes': ['python']}
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']
-let g:syntastic_aggregate_errors = 1
+"""Ctrlp configuration
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_regexp = 1
+
+if has('nvim')
+    let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
+
+    autocmd! BufWritePost * Neomake
+else
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']
+    let g:syntastic_aggregate_errors = 1
+endif

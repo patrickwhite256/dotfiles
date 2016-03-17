@@ -8,8 +8,13 @@ if [ -e /usr/local/bin/virtualenvwrapper.sh ]; then
     VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
     source /usr/local/bin/virtualenvwrapper.sh
 fi
-PATH=$PATH:$HOME/workspace/llvm/build/Release/bin:$HOME/bin
-export EDITOR=vim
+PATH=$HOME/bin:$PATH:$HOME/workspace/llvm/build/Release/bin
+# if i have a custom build/have neovim, use that
+if [[ -s ~/bin/vim ]]; then
+    export EDITOR=$HOME/bin/vim
+else
+    export EDITOR=vim
+fi
 
 check_virtualenv() {
     if [ -e .venv ]; then

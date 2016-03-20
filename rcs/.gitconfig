@@ -12,7 +12,7 @@
     df = diff --color-words
     root = rev-parse --show-toplevel
 [core]
-    excludesfile = ~/global_gitignore
+    excludesfile = ~/.gitignore
     editor = vim
     pager = less -r
 [merge]

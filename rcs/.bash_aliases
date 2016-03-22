@@ -12,6 +12,7 @@ alias l="ls -l"
 alias goroot="cd \$(git rev-parse --show-toplevel)"
 # needed to work with custom vim install
 alias vi="vim"
+alias ag="ag --color-match='1;31'"
 
 if [ -e ~/.bash_aliases.local ]; then
     source ~/.bash_aliases.local

@@ -66,9 +66,9 @@ make-it-feel-like-home() {
         echo "Usage: make-it-feel-like-home SERVER"
         return
     fi
-    dotfiles_dir=$(dirname $(readlink $HOME/.bashrc))
+    dotfiles_dir=$(dirname $(dirname $(readlink $HOME/.bashrc)))
     scp -r $dotfiles_dir $server:~/dotfiles
-    ssh $server "cd ~/dotfiles && make"
+    ssh $server "cd ~/dotfiles && ./install.sh"
 }
 
 set -o vi

@@ -23,11 +23,13 @@ red(){
 }
 
 # dependency test
-deps=(git libtool autoconf automake woop cmake g++ pkg-config unzip libmsgpack-dev libuv-dev libluajit-5.1-dev)
-for dep in $deps; do
+deps=(git libtool autoconf automake cmake g++ pkg-config unzip libmsgpack-dev libuv0.10-dev libluajit-5.1-dev)
+dep_check_ok=1
+for dep in ${deps[@]}; do
     if [ $(dpkg-query -W -f='${Status}' $dep 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-        red "$dep not found. Exiting."
-        exit 1
+        dep_check_ok=0
+        red "$dep not found. Will not install complex dependencies"
+        break
     fi
 done
 green "Dependency check okay!"
@@ -67,6 +69,8 @@ mkdir -p ~/bin
 cyan " - pick"
 if [ -s ~/bin/pick ]; then
     cyan "  - Found ~/bin/pick already, skipping"
+elif [ "$dep_check_okay" -eq 0 ]; then
+    red " - Dependencies not met, skipping install"
 else
     (
         set -e
@@ -94,6 +98,8 @@ fi
 cyan " - neovim"
 if [ -s ~/bin/vim ]; then
     cyan "  - Found ~/bin/vim already, skipping"
+elif [ "$dep_check_okay" -eq 0 ]; then
+    red " - Dependencies not met, skipping install"
 else
     cyan "  - This may take a while. For progress, tail $root_dir/logs/neovim."
     (

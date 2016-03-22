@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # I thought about using puppet or chef or something, but that seems like
-# and insanely heavy dependency for something this small.
+# an insanely heavy dependency for something this small.
 
 PICK_VER=1.3.0
 mkdir -p logs
@@ -69,8 +69,8 @@ mkdir -p ~/bin
 cyan " - pick"
 if [ -s ~/bin/pick ]; then
     cyan "  - Found ~/bin/pick already, skipping"
-elif [ "$dep_check_okay" -eq 0 ]; then
-    red " - Dependencies not met, skipping install"
+elif [ "$dep_check_ok" == 0 ]; then
+    red "  - Dependencies not met, skipping install"
 else
     (
         set -e
@@ -98,8 +98,8 @@ fi
 cyan " - neovim"
 if [ -s ~/bin/vim ]; then
     cyan "  - Found ~/bin/vim already, skipping"
-elif [ "$dep_check_okay" -eq 0 ]; then
-    red " - Dependencies not met, skipping install"
+elif [ "$dep_check_ok" -eq 0 ]; then
+    red "  - Dependencies not met, skipping install"
 else
     cyan "  - This may take a while. For progress, tail $root_dir/logs/neovim."
     (
@@ -151,7 +151,7 @@ if [ -s ~/.vim/bundle/Vundle.vim ]; then
 else
     cyan "  - Installing Vundle"
     mkdir -p ~/.vim/bundle
-	git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 vim +BundleInstall +qall
 echo

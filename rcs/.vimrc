@@ -6,24 +6,30 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
+"themes and schemes
 Plugin 'sjl/badwolf'
+Plugin 'vim-airline/vim-airline-themes'
+
+"tools and addons
 Plugin 'scrooloose/nerdtree'
-Plugin 'flxf/uCpp.vim'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-commentary'
 Plugin 'nvie/vim-flake8.git'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'derekwyatt/vim-scala'
 Plugin 'ctrlpvim/ctrlp.vim'
-
 if has('nvim')
     Plugin 'benekastah/neomake'
 else
     Plugin 'scrooloose/syntastic'
 end
+
+"language support
+Plugin 'flxf/uCpp.vim'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'kchmck/vim-coffee-script'
+
 call vundle#end()
 
 filetype plugin indent on

@@ -74,8 +74,6 @@ make-it-feel-like-home() {
 set -o vi
 bind -m vi-insert "\C-l":clear-screen # why is this not default
 
-check_virtualenv
-
 source ~/.bash_aliases
 # Reset
 rst='\e[0m'             # Text Reset
@@ -166,6 +164,16 @@ make-it-rainbow() {
         done
     done
     echo -e "\e[0m"
+}
+
+# credit to @svrana
+is() {
+    if [ -z "$1" ]; then
+        return
+    fi
+
+    ps aux | head -n1
+    ps aux | grep -v grep | grep "$@" -i --color=auto
 }
 
 # debian chroot

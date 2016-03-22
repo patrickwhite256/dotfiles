@@ -22,6 +22,7 @@ what's in the box?
  - [pick](https://github.com/thoughtbot/pick)
  - [neovim](https://neovim.io/)
  - [markdown](https://daringfireball.net/projects/markdown/)
+ - [the silver searcher](http://geoff.greer.fm/ag/)
 
 other
 -----

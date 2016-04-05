@@ -13,6 +13,7 @@ alias goroot="cd \$(git rev-parse --show-toplevel)"
 # needed to work with custom vim install
 alias vi="vim"
 alias ag="ag --color-match='1;31'"
+alias grom="git fetch && git rebase origin/master"
 
 if [ -e ~/.bash_aliases.local ]; then
     source ~/.bash_aliases.local

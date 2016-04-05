@@ -57,6 +57,10 @@ hpick() {
     eval "$CMD"
 }
 
+dog(){
+    cat $@ | highlight -O ansi
+}
+
 # Assumption is you've already set up ssh configs such that you can just
 # type "ssh server" but it doesn't feel like home
 # This changes that
@@ -119,7 +123,7 @@ check_dotfiles_updates() {
             return
         fi
     fi
-    dotfiles_dir=$(dirname $(readlink $HOME/.bashrc))
+    dotfiles_dir=$(dirname $(dirname $(readlink $HOME/.bashrc)))
     local_head=$(cd $dotfiles_dir && git rev-parse HEAD)
     remote_head=$(cd $dotfiles_dir && git ls-remote origin | head -n 1 | cut -f1)
     if [[ "$local_head" != "$remote_head" ]]; then
@@ -175,6 +179,8 @@ is() {
     ps aux | head -n1
     ps aux | grep -v grep | grep "$@" -i --color=auto
 }
+
+bind '"\C-p":"vim +CtrlP\n"'
 
 # debian chroot
 PS1="${debian_chroot:+($debian_chroot)}"

@@ -19,8 +19,12 @@ Plugin 'nvie/vim-flake8.git'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'rking/ag.vim'
+Plugin 'Chun-Yang/vim-action-ag'
 if has('nvim')
     Plugin 'benekastah/neomake'
+    Plugin 'janko-m/vim-test'
 else
     Plugin 'scrooloose/syntastic'
 end
@@ -53,8 +57,11 @@ set autoindent
 set smartindent
 set nowrap
 
+"there are a lot of these... i should probably make a list
 autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType php setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType html setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType css setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set nu
 set hlsearch
@@ -172,10 +179,18 @@ let NERDTreeQuitOnOpen=1
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_regexp = 1
 
+"""TODO: if cache is stale (>1 day) clear it
+
+let g:ag_working_path_mode="r" "90% of the time i mean 'find in project'
+
 if has('nvim')
     let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
 
     autocmd! BufWritePost * Neomake
+
+    let g:test#strategy = "neovim"
+    let g:test#preserve_screen = 1
+    nmap <silent> <F4> :TestFile<CR>
 else
     let g:syntastic_always_populate_loc_list = 1
     let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']

@@ -5,3 +5,6 @@ __pycache__
 *.o
 *.d
 *.zip
+*.coverage
+htmlcov
+.cache

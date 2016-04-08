@@ -20,7 +20,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-surround'
-Plugin 'rking/ag.vim'
+Plugin 'patrickwhite256/ag.vim'
 Plugin 'Chun-Yang/vim-action-ag'
 if has('nvim')
     Plugin 'benekastah/neomake'
@@ -121,7 +121,8 @@ map <C-L> :redraw!<CR>:noh<CR>
 
 " this has no apparent neomake analogue yet
 nmap <silent> <F3> :SyntasticReset<CR>
-nmap <F5> :execute "!markdown " expand("%") . " > " . expand("%:r") . ".html"<CR><CR>
+nmap <F5> :e<CR>
+nmap <F6> :execute "!markdown " expand("%") . " > " . expand("%:r") . ".html"<CR><CR>
 
 if bufwinnr(1)
     map + <C-W>+
@@ -182,6 +183,7 @@ let g:ctrlp_regexp = 1
 """TODO: if cache is stale (>1 day) clear it
 
 let g:ag_working_path_mode="r" "90% of the time i mean 'find in project'
+let g:ag_default_window_type='l' " use location list instead of quickfix window
 
 if has('nvim')
     let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']

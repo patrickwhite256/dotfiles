@@ -119,8 +119,12 @@ map <leader>x :tabclose<CR>
 
 map <C-L> :redraw!<CR>:noh<CR>
 
-" this has no apparent neomake analogue yet
-nmap <silent> <F3> :SyntasticReset<CR>
+if has('nvim')
+    " needs to be called twice since they're only reset at the end of the call
+    nmap <silent> <F3> :call neomake#signs#ResetFile(bufnr('%'))<CR>:call neomake#signs#ResetFile(bufnr('%'))<CR>
+else
+    nmap <silent> <F3> :SyntasticReset<CR>
+endif
 nmap <F5> :e<CR>
 nmap <F6> :execute "!markdown " expand("%") . " > " . expand("%:r") . ".html"<CR><CR>
 
@@ -193,6 +197,7 @@ if has('nvim')
     let g:test#strategy = "neovim"
     let g:test#preserve_screen = 1
     nmap <silent> <F4> :TestFile<CR>
+    tnoremap <Esc> <C-\><C-n>
 else
     let g:syntastic_always_populate_loc_list = 1
     let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']

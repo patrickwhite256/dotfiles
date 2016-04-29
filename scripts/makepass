@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+import random
+import string
+
+# i use this to make moderately strong passwords.
+
+
+def filter_words(word_list):
+    acceptable_chars = string.ascii_lowercase + string.ascii_uppercase + '\n'
+
+    def is_acceptable(word):
+        if len(word) > 7:
+            return False
+        for char in word:
+            if char not in acceptable_chars:
+                return False
+        return True
+    return [_.strip() for _ in word_list if is_acceptable(_)]
+
+
+def make_pass(words):
+    n_words = random.randint(2, 3)
+    caps_words = random.randint(0, n_words)
+    use_words = random.sample(words, n_words)
+    for i in range(0, n_words):
+        if i < caps_words:
+            use_words[i] = use_words[i].upper()
+        else:
+            use_words[i] = use_words[i].lower()
+
+    use_words.append(random.sample(string.punctuation, 1)[0])
+    use_words.append(str(random.randint(0, 100)))
+
+    random.shuffle(use_words)
+    return ''.join(use_words)
+
+
+def main():
+    with open('/etc/dictionaries-common/words') as f:
+        words = filter_words(f)
+
+    for i in range(0, 40):
+        print make_pass(words)
+
+if __name__ == '__main__':
+    main()

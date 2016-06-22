@@ -166,11 +166,9 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_alt_sep = ''
-if exists($SUPPORTS_TRIANGLES)
+if !empty($SUPPORTS_TRIANGLES)
     let g:airline_left_sep = '▶'
     let g:airline_right_sep = '◀'
-    let g:airline_left_alt_sep = '▶'
-    let g:airline_right_alt_sep = '◀'
 endif
 let g:airline_symbols.branch = '⎇'
 
@@ -181,7 +179,7 @@ let NERDTreeIgnore=['\.pyc$','__pycache__']
 let NERDTreeQuitOnOpen=1
 
 """Ctrlp configuration
-let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_custom_ignore = 'node_modules'
 let g:ctrlp_regexp = 1
 
 """TODO: if cache is stale (>1 day) clear it

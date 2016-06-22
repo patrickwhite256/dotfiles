@@ -108,7 +108,7 @@ cyan " - neovim"
 if [ -s ~/bin/vim ]; then
     cyan "  - Found ~/bin/vim already, skipping"
 else
-    dep_check git libtool autoconf automake cmake g++ pkg-config unzip libmsgpack-dev libuv0.10-dev libluajit-5.1-dev
+    dep_check git libtool autoconf automake cmake g++ pkg-config unzip libmsgpack-dev libuv-dev libluajit-5.1-dev
     if [ $? -ne 0 ]; then
         red "  - Dependencies not met, skipping install"
     else

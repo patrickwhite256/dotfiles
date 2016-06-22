@@ -5,6 +5,8 @@
     st = status
     ci = commit
     co = checkout
+    b = branch
+    f = fetch
     logp = log -p --word-diff -n 3
     lg = log -n 20 --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)%Creset'
     lgall = log --graph --pretty=format:'%Cgreen%h %Cblue%an%Creset %s %Cred(%cr)%Creset'

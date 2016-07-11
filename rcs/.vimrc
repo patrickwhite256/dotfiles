@@ -189,6 +189,7 @@ let g:ag_default_window_type='l' " use location list instead of quickfix window
 
 if has('nvim')
     let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
+    let g:neomake_cpp_gcc_args = ['-std=c++11']
 
     autocmd! BufWritePost * Neomake
 

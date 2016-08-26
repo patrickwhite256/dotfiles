@@ -16,6 +16,7 @@ alias ag="ag --color-match='1;31'"
 alias agg="ag -g"
 alias aggu="ag -u -g"
 alias grom="git fetch && git rebase origin/master"
+alias reality="cd \$(realpath .)"
 
 if [ -e ~/.bash_aliases.local ]; then
     source ~/.bash_aliases.local

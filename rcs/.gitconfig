@@ -1,6 +1,8 @@
 [user]
 	name = Patrick White
 	email = patrickwhite.256@gmail.com
+[include]
+    path = ~/.gitconfig.local # custom name/email
 [alias]
     st = status
     ci = commit
@@ -27,5 +29,3 @@
     rebase = true
 [color]
     ui = true
-[commit]
-	gpgsign = true

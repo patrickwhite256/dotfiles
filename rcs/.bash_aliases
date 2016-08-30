@@ -21,3 +21,9 @@ alias reality="cd \$(realpath .)"
 if [ -e ~/.bash_aliases.local ]; then
     source ~/.bash_aliases.local
 fi
+
+if [ -n "$IS_MAC" ]; then
+    alias ls="gls -h --color=auto"
+    alias date="gdate"
+    alias echo="gecho"
+fi

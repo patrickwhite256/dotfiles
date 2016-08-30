@@ -4,11 +4,10 @@
 if [ -e $HOME/.bashrc.local ]; then
     source $HOME/.bashrc.local
 fi
-if [ -e /usr/local/bin/virtualenvwrapper.sh ]; then
-    VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-    source /usr/local/bin/virtualenvwrapper.sh
-fi
-PATH=$HOME/bin:$PATH:$HOME/workspace/llvm/build/Release/bin
+
+export PATH=$PATH:$HOME/bin:$GOPATH/bin
+export GOPATH=$HOME/workspace/go
+
 # if i have a custom build/have neovim, use that
 if [[ -s ~/bin/vim ]]; then
     export EDITOR=$HOME/bin/vim
@@ -64,10 +63,10 @@ dog(){
 # Assumption is you've already set up ssh configs such that you can just
 # type "ssh server" but it doesn't feel like home
 # This changes that
-make-it-feel-like-home() {
+make_it_feel_like_home() {
     server=$1
     if [ -z "$server" ]; then
-        echo "Usage: make-it-feel-like-home SERVER"
+        echo "Usage: make_it_feel_like_home SERVER"
         return
     fi
     dotfiles_dir=$(dirname $(dirname $(readlink $HOME/.bashrc)))
@@ -77,6 +76,7 @@ make-it-feel-like-home() {
 
 set -o vi
 bind -m vi-insert "\C-l":clear-screen # why is this not default
+bind -m vi-insert "\C-i":complete
 
 source ~/.bash_aliases
 # Reset
@@ -103,7 +103,11 @@ branch_color() {
 }
 
 if [ -z "$SSH_TTY" ]; then
-    NOT_SSH=1
+    export NOT_SSH=1
+fi
+
+if [ `uname -s` == "Darwin" ]; then
+    export IS_MAC=1
 fi
 
 host_color() {
@@ -158,7 +162,7 @@ git_pwd_postfix() {
     echo -n ${ALT_PWD#*$ROOT}
 }
 
-make-it-rainbow() {
+make_it_rainbow() {
     for x in 0 1 4 5 7 8; do
         for i in {30..37}; do
             for a in {40..47}; do
@@ -192,6 +196,12 @@ PS1="$PS1:\[$bblu\]\$(git_pwd_prefix)\[$byel\]\$(git_pwd_root)\[$bblu\]\$(git_pw
 PS1="$PS1\[\$(branch_color)\]\$(__git_ps1)\[$rst\] \$ "
 # enable for boring mode
 #PS1="\[$bgre\]\u@\h\[$rst\]:\[$bblu\]\w\[$rst\] \$ "
+
+export PS1
+
+if [ -n "$IS_MAC" ]; then
+    alias __git_ps1="git branch 2>/dev/null | grep '*' | sed 's/* \(.*\)/ (\1)/'"
+fi
 
 check_virtualenv
 check_dotfiles_updates

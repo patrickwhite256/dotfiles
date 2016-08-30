@@ -30,6 +30,7 @@ else
 end
 
 "language support
+Plugin 'fatih/vim-go'
 Plugin 'flxf/uCpp.vim'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'kchmck/vim-coffee-script'

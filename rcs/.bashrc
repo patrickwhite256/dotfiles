@@ -5,7 +5,7 @@ if [ -e $HOME/.bashrc.local ]; then
     source $HOME/.bashrc.local
 fi
 
-export PATH=$PATH:$HOME/bin:$GOPATH/bin
+export PATH=$HOME/bin:$PATH:$GOPATH/bin
 export GOPATH=$HOME/workspace/go
 
 # if i have a custom build/have neovim, use that
@@ -14,6 +14,16 @@ if [[ -s ~/bin/vim ]]; then
 else
     export EDITOR=vim
 fi
+
+if [ -z "$SSH_TTY" ]; then
+    export NOT_SSH=1
+fi
+
+if [ `uname -s` == "Darwin" ]; then
+    export IS_MAC=1
+fi
+
+source ~/.bash_aliases
 
 check_virtualenv() {
     if [ -e .venv ]; then
@@ -78,7 +88,6 @@ set -o vi
 bind -m vi-insert "\C-l":clear-screen # why is this not default
 bind -m vi-insert "\C-i":complete
 
-source ~/.bash_aliases
 # Reset
 rst='\e[0m'             # Text Reset
 
@@ -101,14 +110,6 @@ branch_color() {
   fi
   echo -ne $color
 }
-
-if [ -z "$SSH_TTY" ]; then
-    export NOT_SSH=1
-fi
-
-if [ `uname -s` == "Darwin" ]; then
-    export IS_MAC=1
-fi
 
 host_color() {
     if [ -z "$NOT_SSH" ]; then

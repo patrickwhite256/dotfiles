@@ -184,6 +184,11 @@ is() {
     ps aux | grep -v grep | grep "$@" -i --color=auto
 }
 
+# switch Go projects
+sp() {
+    cd $GOPATH/src/$(find $GOPATH/src -maxdepth 3 -mindepth 3 -type d | sed 's_.*src/__' | pick)
+}
+
 bind '"\C-p":"vim +CtrlP\n"'
 
 # debian chroot

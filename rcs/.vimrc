@@ -22,6 +22,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'patrickwhite256/ag.vim'
 Plugin 'Chun-Yang/vim-action-ag'
+Plugin 'jpmv27/tagbar'
 if has('nvim')
     Plugin 'benekastah/neomake'
     Plugin 'janko-m/vim-test'
@@ -128,6 +129,7 @@ else
 endif
 nmap <F5> :e<CR>
 nmap <F6> :execute "!markdown " expand("%") . " > " . expand("%:r") . ".html"<CR><CR>
+nmap <F8> :TagbarToggle<CR>
 
 if bufwinnr(1)
     map + <C-W>+
@@ -203,3 +205,7 @@ else
     let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']
     let g:syntastic_aggregate_errors = 1
 endif
+
+"""go-vim configuration
+let g:go_fmt_command = "goimports"
+let g:go_list_type = "location"

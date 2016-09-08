@@ -2,7 +2,6 @@ alias cd="venv_cd"
 alias cd..="cd .."
 alias ..="cd .."
 alias less="less -F"
-alias open="xdg-open"
 alias grep='grep -I --color=auto'
 alias clang++="clang++ -I/usr/local/include/c++/v1"
 alias tmux="deactivate || : && tmux -2"
@@ -26,4 +25,6 @@ if [ -n "$IS_MAC" ]; then
     alias ls="gls -h --color=auto"
     alias date="gdate"
     alias echo="gecho"
+else
+    alias open="xdg-open"
 fi

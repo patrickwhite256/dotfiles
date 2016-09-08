@@ -207,6 +207,11 @@ export PS1
 
 if [ -n "$IS_MAC" ]; then
     alias __git_ps1="git branch 2>/dev/null | grep '*' | sed 's/* \(.*\)/ (\1)/'"
+    if [ -e ~/.git-completion.bash ]; then
+        source ~/.git-completion.bash
+    else
+        echo -e "${red}git completion script not installed! Get the latest version from https://github.com/git/git/blob/master/contrib/completion/git-completion.bash$rst"
+    fi
 fi
 
 check_virtualenv

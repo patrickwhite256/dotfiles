@@ -187,7 +187,15 @@ is() {
 
 # switch Go projects
 sp() {
-    cd $GOPATH/src/$(find $GOPATH/src -maxdepth 3 -mindepth 3 -type d | sed 's_.*src/__' | pick)
+    projects=$(find $GOPATH/src -maxdepth 3 -mindepth 3 -type d | sed 's_.*src/__')
+    if [ -n "$1" ];then
+        projects=$(echo "$projects" | grep $1)
+    fi
+    if [ $(echo "$projects" | wc -l ) == "1" ]; then
+        cd $GOPATH/src/$projects
+    else
+        cd $GOPATH/src/$(echo "$projects" | pick)
+    fi
 }
 
 bind '"\C-p":"vim +CtrlP\n"'

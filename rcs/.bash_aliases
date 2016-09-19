@@ -16,6 +16,7 @@ alias agg="ag -g"
 alias aggu="ag -u -g"
 alias grom="git fetch && git rebase origin/master"
 alias reality="cd \$(realpath .)"
+alias :q="exit"
 
 if [ -e ~/.bash_aliases.local ]; then
     source ~/.bash_aliases.local

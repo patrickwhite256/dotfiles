@@ -187,7 +187,7 @@ is() {
 
 # switch Go projects
 sp() {
-    projects=$(find $GOPATH/src -maxdepth 3 -mindepth 3 -type d | sed 's_.*src/__')
+    projects=$(find $GOPATH/src -maxdepth 3 -mindepth 3 \( -type d -or -type l \) | sed 's_.*src/__')
     if [ -n "$1" ];then
         projects=$(echo "$projects" | grep $1)
     fi

@@ -35,6 +35,7 @@ Plugin 'fatih/vim-go'
 Plugin 'flxf/uCpp.vim'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'mustache/vim-mustache-handlebars'
 
 call vundle#end()
 
@@ -64,6 +65,7 @@ autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType php setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType html setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType css setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set nu
 set hlsearch
@@ -74,7 +76,7 @@ set smartcase
 set wildmenu
 set mouse=
 
-set wildignore+=*.pyc,__pycache__
+set wildignore+=*.pyc,__pycache__,tmp
 
 silent! colorscheme badwolf
 

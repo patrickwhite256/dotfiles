@@ -4,6 +4,7 @@ deploy.sh
 __pycache__
 *.o
 *.d
+!*.d/
 *.zip
 *.coverage
 htmlcov

@@ -198,6 +198,14 @@ sp() {
     fi
 }
 
+_sp() {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    projects=$(find $GOPATH/src -maxdepth 3 -mindepth 3 \( -type d -or -type l \) | sed 's_.*src/__' | grep $cur)
+    COMPREPLY=( $projects )
+}
+
+complete -F _sp sp
+
 bind '"\C-p":"vim +CtrlP\n"'
 
 # debian chroot

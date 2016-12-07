@@ -34,8 +34,10 @@ end
 Plugin 'fatih/vim-go'
 Plugin 'flxf/uCpp.vim'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'hashivim/vim-terraform'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'rodjek/vim-puppet'
 
 call vundle#end()
 
@@ -66,6 +68,8 @@ autocmd FileType php setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType html setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType css setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType yaml setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType json setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set nu
 set hlsearch
@@ -76,7 +80,7 @@ set smartcase
 set wildmenu
 set mouse=
 
-set wildignore+=*.pyc,__pycache__,tmp
+set wildignore+=*.pyc,__pycache__,tmp,__vendor
 
 silent! colorscheme badwolf
 
@@ -155,6 +159,10 @@ nnoremap <Down> <C-w>j
 nnoremap <Up> <C-w>k
 nnoremap <Right> <C-w>l
 
+""" Begone escape key
+
+inoremap jj <Esc>
+
 """Airline configuration
 set laststatus=2
 let g:airline_theme = 'simple'
@@ -195,6 +203,7 @@ let g:ag_default_window_type='l' " use location list instead of quickfix window
 if has('nvim')
     let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
     let g:neomake_cpp_gcc_args = ['-std=c++11']
+    let g:neomake_javascript_enabled_makers = ['eslint']
 
     autocmd! BufWritePost * Neomake
 

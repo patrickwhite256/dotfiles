@@ -84,3 +84,28 @@ else
         green "  - Success!"
     fi
 fi
+
+cyan " - diff-so-fancy"
+if [ -s ~/bin/diff-so-fancy ]; then
+    cyan "  - Found ~/bin/diff-so-fancy already, skipping"
+else
+    dep_check git
+    if [ $? -ne 0 ]; then
+        red "  - Dependencies not met, skipping install"
+    else
+        (
+            set -e
+            git clone https://github.com/so-fancy/diff-so-fancy.git
+            cd diff-so-fancy
+            cp diff-so-fancy libexec/diff-so-fancy.pl third_party/diff-highlight/diff-highlight ~/bin
+            chmod +x ~/bin/diff-highlight
+            cd ..
+            rm -rf diff-so-fancy
+        ) >$root_dir/logs/diff-so-fancy 2>&1
+        if [ "$?" -ne 0 ]; then
+            red " - Something went wrong. Check logs/diff-so-fancy"
+        else
+            green "  - Success!"
+        fi
+    fi
+fi

@@ -6,7 +6,7 @@ if [ -e $HOME/.bashrc.local ]; then
 fi
 
 export PATH=$HOME/bin:$PATH:$GOPATH/bin
-export GOPATH=$HOME/workspace/go
+export GOPATH=$HOME/go
 
 # if i have a custom build/have neovim, use that
 if [[ -s ~/bin/vim ]]; then
@@ -184,6 +184,32 @@ is() {
     ps aux | head -n1
     ps aux | grep -v grep | grep "$@" -i --color=auto
 }
+
+lstf() {
+    ls ~/lib/terraform | egrep -v "terraform$"
+}
+
+chtf() {
+    if [ -z "$1" ]; then
+        echo "Usage: chtf <version>"
+        return 1
+    fi
+    if [ -e ~/lib/terraform/$1 ]; then
+        rm ~/lib/terraform/terraform
+        ln -s ~/lib/terraform/$1 ~/lib/terraform/terraform
+    else
+        echo -e "$red No terraform version \"$1\" found$rst"
+        return 1
+    fi
+}
+
+_chtf() {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    versions=$(ls ~/lib/terraform | egrep -v "terraform$" | grep $cur)
+    COMPREPLY=( $versions )
+}
+
+complete -F _chtf chtf
 
 # switch Go projects
 sp() {

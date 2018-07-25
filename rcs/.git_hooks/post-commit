@@ -1,0 +1,15 @@
+#!/bin/bash
+
+red(){
+    printf "\e[1;31m$@\e[0m\n"
+}
+
+# i don't think there's an option for machine-readable --shortstat output (a la --numstat)
+added=$(git diff master --name-only | egrep -v '^vendor|^__vendor' | xargs git diff master --shortstat -- | cut -d ' ' -f5)
+removed=$(git diff master --name-only | egrep -v '^vendor|^__vendor' | xargs git diff master --shortstat -- | cut -d ' ' -f7)
+
+total=$((added+removed))
+
+if (( $total > 1000 )); then
+    red "This branch is $total lines different from master; strongly consider creating a pull request now."
+fi

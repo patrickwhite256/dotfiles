@@ -12,6 +12,8 @@ Plugin 'vim-airline/vim-airline-themes'
 
 "tools and addons
 Plugin 'scrooloose/nerdtree'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-commentary'
@@ -20,9 +22,12 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
 Plugin 'patrickwhite256/ag.vim'
 Plugin 'Chun-Yang/vim-action-ag'
 Plugin 'jpmv27/tagbar'
+Plugin 'inkarkat/vim-ingo-library'
+Plugin 'inkarkat/vim-mark'
 if has('nvim')
     Plugin 'benekastah/neomake'
     Plugin 'janko-m/vim-test'
@@ -34,10 +39,12 @@ end
 Plugin 'fatih/vim-go'
 Plugin 'flxf/uCpp.vim'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'elixir-editors/vim-elixir'
 Plugin 'hashivim/vim-terraform'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'rodjek/vim-puppet'
+Plugin 'uarun/vim-protobuf'
 
 call vundle#end()
 
@@ -90,7 +97,7 @@ silent! colorscheme badwolf
 " highlight OverLength ctermbg=7 ctermfg=black guibg=#592929
 " match OverLength /\%81v.\+/
 
-set colorcolumn=80
+set colorcolumn=120
 
 """functions to toggle location list
 """adapted from http://vim.wikia.com/wiki/Toggle_to_open_or_close_the_quickfix_window
@@ -135,7 +142,7 @@ else
 endif
 nmap <F5> :e<CR>
 nmap <F6> :execute "!markdown " expand("%") . " > " . expand("%:r") . ".html"<CR><CR>
-nmap <F8> :TagbarToggle<CR>
+" nmap <F8> :TagbarToggle<CR>
 
 if bufwinnr(1)
     map + <C-W>+
@@ -162,6 +169,11 @@ nnoremap <Right> <C-w>l
 """ Begone escape key
 
 inoremap jj <Esc>
+
+""" Am I getting lazy? Yes.
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 """Airline configuration
 set laststatus=2
@@ -202,15 +214,47 @@ let g:ag_default_window_type='l' " use location list instead of quickfix window
 
 if has('nvim')
     let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
+    let g:neomake_python_pep8_maker = {
+    \ 'args': [
+    \   '--config=/Users/whpatr/go/src/code.justin.tv/liverecs/model-generation/pep8.ini'
+    \ ],
+    \ 'errorformat': '%f:%l:%c: %m',
+    \ 'postprocess': function('neomake#makers#ft#python#Pep8EntryProcess')
+    \ }
     let g:neomake_cpp_gcc_args = ['-std=c++11']
     let g:neomake_javascript_enabled_makers = ['eslint']
+    " let g:neomake_go_enabled_makers = [ 'go', 'gometalinter' ]
+    " let g:neomake_go_gometalinter_maker = {
+  " \ 'args': [
+  " \   '--tests',
+  " \   '--enable-gc',
+  " \   '--concurrency=3',
+  " \   '--fast',
+  " \   '-D', 'aligncheck',
+  " \   '-D', 'dupl',
+  " \   '-D', 'gocyclo',
+  " \   '-D', 'gotype',
+  " \   '-E', 'errcheck',
+  " \   '-E', 'misspell',
+  " \   '-E', 'unused',
+  " \   '%:p:h',
+  " \ ],
+  " \ 'append_file': 0,
+  " \ 'errorformat':
+  " \   '%E%f:%l:%c:%trror: %m,' .
+  " \   '%W%f:%l:%c:%tarning: %m,' .
+  " \   '%E%f:%l::%trror: %m,' .
+  " \   '%W%f:%l::%tarning: %m'
+  " \ }
 
     autocmd! BufWritePost * Neomake
 
-    let g:test#strategy = "neovim"
-    let g:test#preserve_screen = 1
-    nmap <silent> <F4> :TestFile<CR>
+    " let g:test#strategy = "neovim"
+    " let g:test#preserve_screen = 1
+    " nmap <silent> <F4> :TestFile<CR>
     tnoremap <Esc> <C-\><C-n>
+    let g:go_term_enabled = 1
+    let g:go_term_mode = "split"
 else
     let g:syntastic_always_populate_loc_list = 1
     let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']
@@ -220,3 +264,15 @@ endif
 """go-vim configuration
 let g:go_fmt_command = "goimports"
 let g:go_list_type = "location"
+let g:go_list_type_commands = {"GoTest": "quickfix", "GoTestFunc": "quickfix"}
+let g:go_auto_type_info = 0
+set updatetime=100
+nmap <F8> :GoTestFunc<CR>
+
+"deoplete conf
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#complete_method = "omnifunc"
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = '/path/to/data_dir'

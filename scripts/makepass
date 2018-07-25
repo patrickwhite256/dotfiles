@@ -36,7 +36,8 @@ def make_pass(words):
 
 
 def main():
-    with open('/etc/dictionaries-common/words') as f:
+    # with open('/etc/dictionaries-common/words') as f: # linux
+    with open('/usr/share/dict/words') as f: # mac
         words = filter_words(f)
 
     for i in range(0, 40):

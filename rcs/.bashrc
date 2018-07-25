@@ -206,6 +206,11 @@ _sp() {
 
 complete -F _sp sp
 
+if [ -e $HOME/.treeignore ]; then
+    IGNORE=$( cat ~/.treeignore | tr '\n' '|' | sed "s/|$//" )
+    alias tree="tree -I \"$IGNORE\""
+fi
+
 bind '"\C-p":"vim +CtrlP\n"'
 
 # debian chroot

@@ -44,6 +44,8 @@ check_virtualenv() {
     fi
 }
 
+shopt -s globstar
+
 venv_cd() {
     builtin cd "$@" && check_virtualenv
 }
@@ -239,6 +241,7 @@ fi
 
 bind '"\C-p":"vim +CtrlP\n"'
 
+# TODO - this borks if you have a symlink into a git repo
 # debian chroot
 PS1="${debian_chroot:+($debian_chroot)}"
 # user@host

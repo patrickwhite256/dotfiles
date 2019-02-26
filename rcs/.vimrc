@@ -14,6 +14,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-commentary'
@@ -192,8 +193,8 @@ let g:airline_right_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_alt_sep = ''
 if !empty($SUPPORTS_TRIANGLES)
-    let g:airline_left_sep = '▶'
-    let g:airline_right_sep = '◀'
+    let g:airline_left_sep = '◤'
+    let g:airline_right_sep = '◥'
 endif
 let g:airline_symbols.branch = '⎇'
 
@@ -262,7 +263,6 @@ else
 endif
 
 """go-vim configuration
-let g:go_fmt_command = "goimports"
 let g:go_list_type = "location"
 let g:go_list_type_commands = {"GoTest": "quickfix", "GoTestFunc": "quickfix"}
 let g:go_auto_type_info = 0

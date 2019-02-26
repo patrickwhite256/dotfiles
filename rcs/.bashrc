@@ -44,7 +44,7 @@ check_virtualenv() {
     fi
 }
 
-shopt -s globstar
+# shopt -s globstar
 
 venv_cd() {
     builtin cd "$@" && check_virtualenv
@@ -187,6 +187,11 @@ is() {
     ps aux | grep -v grep | grep "$@" -i --color=auto
 }
 
+gofmtandimports() {
+    gofmt -s $@
+    goimports $@
+}
+
 lstf() {
     ls ~/lib/terraform | egrep -v "terraform$"
 }
@@ -209,6 +214,38 @@ _chtf() {
     local cur=${COMP_WORDS[COMP_CWORD]}
     versions=$(ls ~/lib/terraform | egrep -v "terraform$" | grep $cur)
     COMPREPLY=( $versions )
+}
+
+pursuit() {
+    name_and_song=$( python3 ~/lib/phoenix.py pursuit )
+    name=$( echo $name_and_song | cut -d'_' -f1 )
+    uri=$( echo $name_and_song | cut -d'_' -f2 )
+    echo $name
+    osascript -e "tell application \"Spotify\" to play track \"$uri\""
+}
+
+objection() {
+    name_and_song=$( python3 ~/lib/phoenix.py objection )
+    name=$( echo $name_and_song | cut -d'_' -f1 )
+    uri=$( echo $name_and_song | cut -d'_' -f2 )
+    echo $name
+    osascript -e "tell application \"Spotify\" to play track \"$uri\""
+}
+
+confess() {
+    name_and_song=$( python3 ~/lib/phoenix.py confess )
+    name=$( echo $name_and_song | cut -d'_' -f1 )
+    uri=$( echo $name_and_song | cut -d'_' -f2 )
+    echo $name
+    osascript -e "tell application \"Spotify\" to play track \"$uri\""
+}
+
+cross() {
+    name_and_song=$( python3 ~/lib/phoenix.py cross )
+    name=$( echo $name_and_song | cut -d'_' -f1 )
+    uri=$( echo $name_and_song | cut -d'_' -f2 )
+    echo $name
+    osascript -e "tell application \"Spotify\" to play track \"$uri\""
 }
 
 complete -F _chtf chtf

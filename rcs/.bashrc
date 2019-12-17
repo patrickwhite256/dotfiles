@@ -250,22 +250,38 @@ cross() {
 
 complete -F _chtf chtf
 
-# switch Go projects
+# dir:depth
+PROJECT_DIRS=($GOPATH/src:3 ~/workspace:1)
+
+# switch projects
 sp() {
-    projects=$(find $GOPATH/src -maxdepth 3 -mindepth 3 \( -type d -or -type l \) | sed 's_.*src/__')
+    projects=""
+    for dirdepth in ${PROJECT_DIRS[@]}; do
+        dir=$(echo $dirdepth | cut -d':' -f1)
+        depth=$(echo $dirdepth | cut -d':' -f2)
+        projects=$(echo -e "$projects\n$(find $dir -maxdepth $depth -mindepth $depth \( -type d -or -type l \))")
+    done
+    # projects=$(find $GOPATH/src -maxdepth 3 -mindepth 3 \( -type d -or -type l \) | sed 's_.*src/__')
     if [ -n "$1" ];then
         projects=$(echo "$projects" | grep $1)
     fi
     if [ $(echo "$projects" | wc -l ) == "1" ]; then
-        cd $GOPATH/src/$projects
+        # TODO
+        # cd $GOPATH/src/$projects
+        cd $projects
     else
-        cd $GOPATH/src/$(echo "$projects" | pick)
+        cd $(echo "$projects" | pick)
     fi
 }
 
 _sp() {
     local cur=${COMP_WORDS[COMP_CWORD]}
-    projects=$(find $GOPATH/src -maxdepth 3 -mindepth 3 \( -type d -or -type l \) | sed 's_.*src/__' | grep $cur)
+    projects=""
+    for dirdepth in ${PROJECT_DIRS[@]}; do
+        dir=$(echo $dirdepth | cut -d':' -f1)
+        depth=$(echo $dirdepth | cut -d':' -f2)
+        projects=$(echo -e "$projects\n$(cd $dir && find . -maxdepth $depth -mindepth $depth \( -type d -or -type l \) | cut -d'/' -f2- | grep $cur )")
+    done
     COMPREPLY=( $projects )
 }
 

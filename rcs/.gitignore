@@ -10,3 +10,5 @@ htmlcov
 .cache
 *.fdb_latexmk
 *.gch
+patricks-crap
+.DS_Store

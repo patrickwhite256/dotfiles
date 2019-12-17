@@ -19,6 +19,7 @@ alias gdm="git diff master --name-only | egrep -v '^vendor|^__vendor|_tools' | x
 alias gdms="git diff master --name-only | egrep -v '^vendor|^__vendor|_tools' | xargs git diff master --shortstat --"
 alias reality="cd \$(realpath .)"
 alias add="awk '{s+=\$1} END {print s}'"
+alias jqless="jq -C . | less -R"
 alias :q="exit"
 
 if [ -e ~/.bash_aliases.local ]; then

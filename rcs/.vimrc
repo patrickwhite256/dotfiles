@@ -11,10 +11,10 @@ Plugin 'sjl/badwolf'
 Plugin 'vim-airline/vim-airline-themes'
 
 "tools and addons
+Plugin 'w0rp/ale'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/deoplete.nvim'
-Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
-Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
+" Plugin 'stamblerre/gocode', {'rtp': 'nvim/'}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'tpope/vim-commentary'
@@ -30,7 +30,7 @@ Plugin 'jpmv27/tagbar'
 Plugin 'inkarkat/vim-ingo-library'
 Plugin 'inkarkat/vim-mark'
 if has('nvim')
-    Plugin 'benekastah/neomake'
+    " Plugin 'benekastah/neomake'
     Plugin 'janko-m/vim-test'
 else
     Plugin 'scrooloose/syntastic'
@@ -213,18 +213,25 @@ let g:ctrlp_regexp = 1
 let g:ag_working_path_mode="r" "90% of the time i mean 'find in project'
 let g:ag_default_window_type='l' " use location list instead of quickfix window
 
+""" ale config
+let g:ale_linters = {
+\   'go': ['gobuild', 'gofmt', 'golangci-lint'],
+\}
+let g:ale_go_golangci_lint_options = ""
+let g:ale_go_golangci_lint_package=1
+
 if has('nvim')
-    let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
-    let g:neomake_python_pep8_maker = {
-    \ 'args': [
-    \   '--config=/Users/whpatr/go/src/code.justin.tv/liverecs/model-generation/pep8.ini'
-    \ ],
-    \ 'errorformat': '%f:%l:%c: %m',
-    \ 'postprocess': function('neomake#makers#ft#python#Pep8EntryProcess')
-    \ }
-    let g:neomake_cpp_gcc_args = ['-std=c++11']
-    let g:neomake_javascript_enabled_makers = ['eslint']
-    " let g:neomake_go_enabled_makers = [ 'go', 'gometalinter' ]
+    " let g:neomake_python_enabled_makers = ['python', 'pep8', 'pylint']
+    " let g:neomake_python_pep8_maker = {
+    " \ 'args': [
+    " \   '--config=/Users/whpatr/go/src/code.justin.tv/liverecs/model-generation/pep8.ini'
+    " \ ],
+    " \ 'errorformat': '%f:%l:%c: %m',
+    " \ 'postprocess': function('neomake#makers#ft#python#Pep8EntryProcess')
+    " \ }
+    " let g:neomake_cpp_gcc_args = ['-std=c++11']
+    " let g:neomake_javascript_enabled_makers = ['eslint']
+    " let g:neomake_go_enabled_makers = [ 'go', 'golangci-lint' ]
     " let g:neomake_go_gometalinter_maker = {
   " \ 'args': [
   " \   '--tests',
@@ -248,7 +255,7 @@ if has('nvim')
   " \   '%W%f:%l::%tarning: %m'
   " \ }
 
-    autocmd! BufWritePost * Neomake
+    " autocmd! BufWritePost * Neomake
 
     " let g:test#strategy = "neovim"
     " let g:test#preserve_screen = 1
@@ -257,22 +264,43 @@ if has('nvim')
     let g:go_term_enabled = 1
     let g:go_term_mode = "split"
 else
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']
-    let g:syntastic_aggregate_errors = 1
+    " let g:syntastic_always_populate_loc_list = 1
+    " let g:syntastic_python_checkers = ['python', 'pep8', 'pylint']
+    " let g:syntastic_aggregate_errors = 1
 endif
 
 """go-vim configuration
 let g:go_list_type = "location"
 let g:go_list_type_commands = {"GoTest": "quickfix", "GoTestFunc": "quickfix"}
 let g:go_auto_type_info = 0
+let g:go_fmt_command='goimports'
+" let g:go_build_tags = 'integration'
+" let g:go_def_mode = 'godef'
 set updatetime=100
 nmap <F8> :GoTestFunc<CR>
 
 "deoplete conf
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#complete_method = "omnifunc"
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#use_cache = 1
-let g:deoplete#sources#go#json_directory = '/path/to/data_dir'
+call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+set completeopt=menu,menuone
+
+" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+" let g:deoplete#sources#go#use_cache = 1
+" let g:deoplete#sources#go#json_directory = '/path/to/data_dir'
+
+""" folding conf
+set foldmethod=indent
+set foldlevel=1
+set foldnestmax=1
+set foldclose=all
+""" vim-go screws up folding on save
+autocmd BufWritePost *.go normal! zv
+
+""" i got mad at my colour scheme
+" 'lime' from badwolf
+highlight DiffAdd guifg=#aeee00 ctermfg=154
+"  'dress' from badwolf
+highlight DiffDelete guifg=#ff9eb8 ctermfg=211
+highlight GitGutterChangeDelete guifg=#ff9eb8 ctermfg=211
+" 'dirtyblonde' from badwolf
+highlight DiffChange guifg=#f4cf86 ctermfg=222

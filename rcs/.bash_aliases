@@ -21,6 +21,7 @@ alias reality="cd \$(realpath .)"
 alias add="awk '{s+=\$1} END {print s}'"
 alias jqless="jq -C . | less -R"
 alias :q="exit"
+alias tree='tree -I "$(paste -d\| -s ~/.treeignore)"'
 
 if [ -e ~/.bash_aliases.local ]; then
     source ~/.bash_aliases.local

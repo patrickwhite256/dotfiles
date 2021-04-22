@@ -78,6 +78,7 @@ autocmd FileType css setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType yaml setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType json setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType typescript setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set nu
 set hlsearch
@@ -205,7 +206,9 @@ let NERDTreeIgnore=['\.pyc$','__pycache__']
 let NERDTreeQuitOnOpen=1
 
 """Ctrlp configuration
-let g:ctrlp_custom_ignore = 'node_modules'
+let g:ctrlp_custom_ignore = {
+\ 'dir': '\v(node_modules|dist)$',
+\}
 let g:ctrlp_regexp = 1
 
 """TODO: if cache is stale (>1 day) clear it

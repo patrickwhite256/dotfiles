@@ -251,7 +251,7 @@ cross() {
 complete -F _chtf chtf
 
 # dir:depth
-PROJECT_DIRS=($GOPATH/src:3 ~/workspace:1)
+PROJECT_DIRS=($GOPATH/src:3 ~/workspace:1 ~/workspaces:1)
 
 # switch projects
 sp() {

@@ -1,2 +1,4 @@
 vendor
 _tools
+dist
+node_modules

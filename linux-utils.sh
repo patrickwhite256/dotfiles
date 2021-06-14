@@ -1,4 +1,6 @@
 dep_check() {
+    # TODO:
+    # check for presence of either "dkpg-query" or "rpm"
     # args = dependencies
     # dep_check git libtool
     # returns 0 on success, 1 on failure

@@ -4,7 +4,7 @@ alias ..="cd .."
 alias less="less -F"
 alias grep='grep -I --color=auto'
 alias clang++="clang++ -I/usr/local/include/c++/v1"
-alias tmux="deactivate || : && tmux -2"
+alias tmux="deactivate 2>/dev/null || : && tmux -2"
 alias ls="ls -h --color=auto"
 alias ll="ls -la"
 alias l="ls -l"

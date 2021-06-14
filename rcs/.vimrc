@@ -188,16 +188,16 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
-" it's such a pain getting the triangles to work
+" requires glyphs from ryanoasis/powerline-extra-symbols
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_alt_sep = ''
 if !empty($SUPPORTS_TRIANGLES)
-    let g:airline_left_sep = '◤'
-    let g:airline_right_sep = '◥'
+    let g:airline_left_sep = "\ue0b0"
+    let g:airline_right_sep = "\ue0b2"
 endif
-let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.branch = "\ue0a0"
 
 """Nerdtree configuration
 map <C-n> :NERDTreeToggle<CR>

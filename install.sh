@@ -56,6 +56,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# TODO: fzf, direnv
 cyanbold "Installing utilities"
 mkdir -p ~/lib
 mkdir -p ~/bin
@@ -65,6 +66,13 @@ else
     source linux-utils.sh
 fi
 echo
+
+cyan "Installing zgen"
+if [ -s ~/.zgen ]; then
+    cyan " - zgen found"
+else
+    git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+fi
 
 cyanbold "Installing vim plugins"
 if [ -s ~/.vim/bundle/Vundle.vim ]; then

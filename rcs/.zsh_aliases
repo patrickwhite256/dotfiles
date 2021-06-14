@@ -1,0 +1,26 @@
+alias less="less -F"
+alias tmux="deactivate 2>/dev/null || : && tmux -2"
+alias ls="ls -Gh"
+alias ll="ls -la"
+alias l="ls -l"
+alias goroot="cd \$(git rev-parse --show-toplevel)"
+# needed to work with custom vim install
+alias vi="vim"
+alias ag="ag --color-match='1;31'"
+alias agg="ag -g"
+alias aggu="ag -u -g"
+alias reality="cd \$(realpath .)"
+alias :q="exit"
+alias tree='tree -I "$(paste -d\| -s ~/.treeignore)"'
+
+if [ -e ~/.zsh_aliases.local ]; then
+    source ~/.zsh_aliases.local
+fi
+
+if [[ `uname -s` == "Darwin" ]]; then
+    alias ls="gls -h --color=auto"
+    alias date="gdate"
+    alias echo="gecho"
+else
+    alias open="xdg-open"
+fi

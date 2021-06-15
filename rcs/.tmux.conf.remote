@@ -1,0 +1,14 @@
+# vim syntax=tmux
+
+set -g prefix C-a
+bind a send-prefix
+bind C-a last-window
+
+BGCOLOUR=colour35
+FGCOLOUR=colour121
+set -g status-left ""
+set -g status-right "#[bg=colour22,fg=$BGCOLOUR]$SEPARATOR #H #[bg=colour236,fg=colour22]$SEPARATOR#[fg=colour15,bold] %H:%M %d-%b-%y "
+set -g status-bg $BGCOLOUR
+set -g status-fg $BGCOLOUR
+set -g window-status-current-format "#[bg=$FGCOLOUR,fg=$BGCOLOUR,bold]$SEPARATOR#[bg=$FGCOLOUR,fg=colour0,bold] [#I]#W #[bg=$BGCOLOUR,fg=$FGCOLOUR,bold]$SEPARATOR#[bg=$BGCOLOUR,fg=colour0,bold]"
+set -g window-status-format "  #[bg=$BGCOLOUR,fg=colour0,bold][#I]#W  "

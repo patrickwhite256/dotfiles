@@ -5,8 +5,11 @@ red(){
 }
 
 # i don't think there's an option for machine-readable --shortstat output (a la --numstat)
-added=$(git diff master --name-only | egrep -v '^vendor|^__vendor|_tools' | xargs git diff master --shortstat -- | cut -d ' ' -f5)
-removed=$(git diff master --name-only | egrep -v '^vendor|^__vendor|_tools' | xargs git diff master --shortstat -- | cut -d ' ' -f7)
+# added=$(git diff master --name-only | egrep -v '^vendor|^__vendor|_tools' | xargs git diff master --shortstat -- | cut -d ' ' -f5)
+# removed=$(git diff master --name-only | egrep -v '^vendor|^__vendor|_tools' | xargs git diff master --shortstat -- | cut -d ' ' -f7)
+# TODO: rework to support main, mainline, master
+added=0
+removed=0
 
 total=$((added+removed))
 

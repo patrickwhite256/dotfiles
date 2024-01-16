@@ -13,7 +13,8 @@ Plugin 'vim-airline/vim-airline-themes'
 "tools and addons
 Plugin 'w0rp/ale'
 Plugin 'scrooloose/nerdtree'
-Plugin 'Shougo/deoplete.nvim'
+" Plugin 'Shougo/deoplete.nvim'
+Plugin 'neoclide/coc.nvim'
 " Plugin 'stamblerre/gocode', {'rtp': 'nvim/'}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
@@ -82,7 +83,7 @@ autocmd FileType typescript setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set nu
 set hlsearch
-set updatetime=750
+set updatetime=300
 set hidden
 set ignorecase
 set smartcase
@@ -275,17 +276,35 @@ endif
 """go-vim configuration
 let g:go_list_type = "location"
 let g:go_list_type_commands = {"GoTest": "quickfix", "GoTestFunc": "quickfix"}
-let g:go_auto_type_info = 0
+" let g:go_auto_type_info = 0
 let g:go_fmt_command='goimports'
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_generate_tags = 1
+let g:go_auto_sameids = 1
+" disable all linters as that is taken care of by coc.nvim
+let g:go_diagnostics_enabled = 0
+let g:go_metalinter_enabled = []
+let g:go_auto_type_info = 1
 " let g:go_build_tags = 'integration'
 " let g:go_def_mode = 'godef'
-set updatetime=100
+" set updatetime=750
+let g:go_updatetime=100
 nmap <F8> :GoTestFunc<CR>
+
+let g:go_def_mapping_enabled = 0
+nmap <silent> gd <Plug>(coc-definition)
 
 "deoplete conf
 let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+" call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 set completeopt=menu,menuone
+" au filetype go inoremap <buffer> . .<C-x><C-o>
 
 " let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 " let g:deoplete#sources#go#use_cache = 1

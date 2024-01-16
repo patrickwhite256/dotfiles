@@ -12,6 +12,7 @@ alias aggu="ag -u -g"
 alias reality="cd \$(realpath .)"
 alias :q="exit"
 alias tree='tree -I "$(paste -d\| -s ~/.treeignore)"'
+alias serve="python3 -m http.server 8080"
 
 if [ -e ~/.zsh_aliases.local ]; then
     source ~/.zsh_aliases.local

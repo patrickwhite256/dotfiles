@@ -3,7 +3,7 @@
 # I thought about using puppet or chef or something, but that seems like
 # an insanely heavy dependency for something this small.
 
-PICK_VER=1.3.0
+PICK_VER=4.0.0
 mkdir -p logs
 
 green(){

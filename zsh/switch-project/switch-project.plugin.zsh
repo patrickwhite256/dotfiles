@@ -29,7 +29,7 @@ _sp() {
             for dirdepth in ${SP_PROJECT_DIRS[@]}; do
                 dir=$(echo $dirdepth | cut -d':' -f1)
                 depth=$(echo $dirdepth | cut -d':' -f2)
-                for p in $(cd $dir && find . -maxdepth $depth -mindepth $depth \( -type d -or -type l \) | cut -d'/' -f2- ); do
+                for p in $(find $dir -maxdepth $depth -mindepth $depth \( -type d -or -type l \) | xargs -n1 basename ); do
                     projects=($projects $p)
                 done
             done

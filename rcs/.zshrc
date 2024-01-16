@@ -56,3 +56,10 @@ fi
 export GOPATH=$HOME/go
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$GOPATH/bin
 eval "$(direnv hook zsh)"
+
+export AWS_EC2_METADATA_DISABLED=true
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

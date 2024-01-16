@@ -5,7 +5,8 @@ dep_check() {
     # dep_check git libtool
     # returns 0 on success, 1 on failure
     for dep in $@; do
-        if [ $(dpkg-query -W -f='${Status}' $dep 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+        if [ $(rpm -q $dep 2>/dev/null | grep -c "not installed") -ne 0 ]; then
+        # if [ $(dpkg-query -W -f='${Status}' $dep 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
             red "$dep not found."
             return 1
         fi
@@ -18,13 +19,14 @@ cyan " - pick"
 if [ -s ~/bin/pick ]; then
     cyan "  - Found ~/bin/pick already, skipping"
 else
-    dep_check git autoconf automake cmake g++
+    # dep_check git autoconf automake cmake g++
+    dep_check git autoconf automake cmake gcc-c++
     if [ $? -ne 0 ]; then
         red "  - Dependencies not met, skipping install"
     else
         (
             set -e
-            wget https://github.com/thoughtbot/pick/releases/download/v$PICK_VER/pick-$PICK_VER.tar.gz
+            wget https://github.com/mptre/pick/releases/download/v$PICK_VER/pick-$PICK_VER.tar.gz
             tar xzvf pick-$PICK_VER.tar.gz
             mkdir -p ~/lib/pick
             cd pick-$PICK_VER
@@ -50,7 +52,8 @@ cyan " - neovim"
 if [ -s ~/bin/vim ]; then
     cyan "  - Found ~/bin/vim already, skipping"
 else
-    dep_check git libtool autoconf automake cmake g++ pkg-config unzip libmsgpack-dev libuv-dev libluajit-5.1-dev
+    # dep_check git libtool autoconf automake cmake g++ pkg-config unzip libmsgpack-dev libuv-dev libluajit-5.1-dev
+    dep_check ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch gettext
     if [ $? -ne 0 ]; then
         red "  - Dependencies not met, skipping install"
     else
@@ -101,7 +104,8 @@ cyan " - ag"
 if [ -s ~/bin/ag ]; then
     cyan "  - Found ~/bin/ag already, skipping"
 else
-    dep_check automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev
+    # dep_check automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev
+    dep_check pkgconfig automake gcc zlib-devel pcre-devel xz-devel
     if [ $? -ne 0 ]; then
         red "  - Dependencies not met, skipping install"
     else

@@ -1,8 +1,8 @@
 # vim syntax=tmux
 
 set -g prefix C-a
-bind a send-prefix
-bind C-a last-window
+bind b send-prefix
+bind C-b last-window
 
 BGCOLOUR=colour35
 FGCOLOUR=colour121

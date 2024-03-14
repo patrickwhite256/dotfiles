@@ -1,0 +1,37 @@
+{
+  "suggest.noselect": false,
+  "diagnostic.errorSign": "✘",
+  "diagnostic.infoSign": "?",
+  "coc.preferences.formatOnSaveFiletypes": [
+    "python",
+    "javascript",
+    "html",
+    "css",
+    "scss",
+    "go"
+  ],
+  "diagnostic.checkCurrentLine": true,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "filetypes": ["go"]
+    },
+    "golangci-lint-languageserver": {
+      "command": "golangci-lint-languageserver",
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "command": [
+          "golangci-lint",
+          "run",
+          "--out-format",
+          "json",
+          "--issues-exit-code=1"
+        ]
+      }
+    }
+  },
+  "go.goplsOptions": {
+    "staticcheck": true
+  }
+}

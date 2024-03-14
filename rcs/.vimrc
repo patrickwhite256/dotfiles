@@ -14,7 +14,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'w0rp/ale'
 Plugin 'scrooloose/nerdtree'
 " Plugin 'Shougo/deoplete.nvim'
-Plugin 'neoclide/coc.nvim'
+Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 " Plugin 'stamblerre/gocode', {'rtp': 'nvim/'}
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'vim-airline/vim-airline'
@@ -299,6 +299,8 @@ nmap <F8> :GoTestFunc<CR>
 
 let g:go_def_mapping_enabled = 0
 nmap <silent> gd <Plug>(coc-definition)
+
+let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-css', 'coc-go']
 
 "deoplete conf
 let g:deoplete#enable_at_startup = 1

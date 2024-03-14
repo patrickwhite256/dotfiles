@@ -1647,7 +1647,7 @@
 
   function prompt_reponame() {
     root=$(basename $(git rev-parse --show-toplevel 2>/dev/null) 2>/dev/null)
-    p10k segment -b 093 -f 255 -i $'\uF7A1' -c "$root" -t "$root"
+    p10k segment -b 093 -f 255 -i $'\ue702' -c "$root" -t "$root"
   }
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job

@@ -5,8 +5,8 @@ dep_check() {
     # dep_check git libtool
     # returns 0 on success, 1 on failure
     for dep in $@; do
-        if [ $(rpm -q $dep 2>/dev/null | grep -c "not installed") -ne 0 ]; then
-        # if [ $(dpkg-query -W -f='${Status}' $dep 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+        # if [ $(rpm -q $dep 2>/dev/null | grep -c "not installed") -ne 0 ]; then
+        if [ $(dpkg-query -W -f='${Status}' $dep 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
             red "$dep not found."
             return 1
         fi
@@ -16,69 +16,80 @@ dep_check() {
 }
 
 cyan " - pick"
-if [ -s ~/bin/pick ]; then
+which pick > /dev/null
+if [ $? -eq 0 ]; then
     cyan "  - Found ~/bin/pick already, skipping"
 else
-    # dep_check git autoconf automake cmake g++
-    dep_check git autoconf automake cmake gcc-c++
-    if [ $? -ne 0 ]; then
-        red "  - Dependencies not met, skipping install"
-    else
-        (
-            set -e
-            wget https://github.com/mptre/pick/releases/download/v$PICK_VER/pick-$PICK_VER.tar.gz
-            tar xzvf pick-$PICK_VER.tar.gz
-            mkdir -p ~/lib/pick
-            cd pick-$PICK_VER
-            ./configure --prefix=$HOME/lib/pick
-            make
-            make install
-
-            cd $root_dir
-            rm pick-$PICK_VER.tar.gz
-            rm -r pick-$PICK_VER
-            ln -s $HOME/lib/pick/bin/pick ~/bin/pick
-        ) > $root_dir/logs/pick 2>&1
-        # http://unix.stackexchange.com/questions/65532/why-does-set-e-not-work-inside
-        if [ "$?" -ne 0 ]; then
-            red " - Something went wrong. Check logs/pick."
-        else
-            green "  - Success!"
-        fi
-    fi
+    sudo apt install pick
 fi
+# if [ -s ~/bin/pick ]; then
+#     cyan "  - Found ~/bin/pick already, skipping"
+# else
+#     # dep_check git autoconf automake cmake g++
+#     dep_check git autoconf automake cmake gcc-c++
+#     if [ $? -ne 0 ]; then
+#         red "  - Dependencies not met, skipping install"
+#     else
+#         (
+#             set -e
+#             wget https://github.com/mptre/pick/releases/download/v$PICK_VER/pick-$PICK_VER.tar.gz
+#             tar xzvf pick-$PICK_VER.tar.gz
+#             mkdir -p ~/lib/pick
+#             cd pick-$PICK_VER
+#             ./configure --prefix=$HOME/lib/pick
+#             make
+#             make install
+
+#             cd $root_dir
+#             rm pick-$PICK_VER.tar.gz
+#             rm -r pick-$PICK_VER
+#             ln -s $HOME/lib/pick/bin/pick ~/bin/pick
+#         ) > $root_dir/logs/pick 2>&1
+#         # http://unix.stackexchange.com/questions/65532/why-does-set-e-not-work-inside
+#         if [ "$?" -ne 0 ]; then
+#             red " - Something went wrong. Check logs/pick."
+#         else
+#             green "  - Success!"
+#         fi
+#     fi
+# fi
 
 cyan " - neovim"
 if [ -s ~/bin/vim ]; then
     cyan "  - Found ~/bin/vim already, skipping"
 else
-    # dep_check git libtool autoconf automake cmake g++ pkg-config unzip libmsgpack-dev libuv-dev libluajit-5.1-dev
-    dep_check ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch gettext
-    if [ $? -ne 0 ]; then
-        red "  - Dependencies not met, skipping install"
-    else
-        cyan "  - This may take a while. For progress, tail $root_dir/logs/neovim."
-        (
-            set -e
-            git clone https://github.com/neovim/neovim.git
-            mkdir -p ~/lib/neovim
-            cd neovim
-            make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX:PATH=$HOME/lib/neovim"
-            make install
-
-            cd $root_dir
-            rm -rf neovim
-            ln -s $HOME/lib/neovim/bin/nvim ~/bin/vim
-            mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
-            ln -s ~/.vim $XDG_CONFIG_HOME/nvim
-            ln -s ~/.vimrc $XDG_CONFIG_HOME/nvim/init.vim
-        ) >$root_dir/logs/neovim 2>&1
-        if [ "$?" -ne 0 ]; then
-            red " - Something went wrong. Check logs/neovim."
-        else
-            green "  - Success!"
-        fi
+    which nvim > /dev/null
+    if [ $? -eq 0 ]; then
+        sudo apt install nvim
     fi
+    ln -s /usr/bin/nvim ~/bin/vim
+#     # dep_check git libtool autoconf automake cmake g++ pkg-config unzip libmsgpack-dev libuv-dev libluajit-5.1-dev
+#     dep_check ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch gettext
+#     if [ $? -ne 0 ]; then
+#         red "  - Dependencies not met, skipping install"
+#     else
+#         cyan "  - This may take a while. For progress, tail $root_dir/logs/neovim."
+#         (
+#             set -e
+#             git clone https://github.com/neovim/neovim.git
+#             mkdir -p ~/lib/neovim
+#             cd neovim
+#             make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX:PATH=$HOME/lib/neovim"
+#             make install
+
+#             cd $root_dir
+#             rm -rf neovim
+#             ln -s $HOME/lib/neovim/bin/nvim ~/bin/vim
+#             mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
+#             ln -s ~/.vim $XDG_CONFIG_HOME/nvim
+#             ln -s ~/.vimrc $XDG_CONFIG_HOME/nvim/init.vim
+#         ) >$root_dir/logs/neovim 2>&1
+#         if [ "$?" -ne 0 ]; then
+#             red " - Something went wrong. Check logs/neovim."
+#         else
+#             green "  - Success!"
+#         fi
+#     fi
 fi
 
 cyan " - markdown"
@@ -135,7 +146,7 @@ else
         set -e
         git clone https://github.com/so-fancy/diff-so-fancy.git
         cd diff-so-fancy
-        cp -r diff-so-fancy libexec third_party/diff-highlight/diff-highlight ~/bin
+        cp -r diff-so-fancy lib libexec third_party/diff-highlight/diff-highlight ~/bin
         chmod +x ~/bin/diff-highlight
         cd ..
         rm -rf diff-so-fancy

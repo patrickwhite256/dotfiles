@@ -1,0 +1,335 @@
+version: "2"
+run:
+  build-tags:
+    - integration
+  tests: true   # also lint test files. this is default, but worth being explicit about.
+  timeout: 10m  # limit linting to 10m
+output:
+  # sort results by file->severity->linter
+  sort-order:
+  - "file"
+  - "severity"
+  - "linter"
+
+linters:
+  settings:
+    # any enabled linters not here are considered to have "good defaults"
+    embeddedstructfieldcheck:
+      # Checks that sync.Mutex and sync.RWMutex are not used as embedded fields.
+      forbid-mutex: true
+    errcheck:
+      # Report about not checking of errors in type assertions: `a := b.(MyStruct)`.
+      check-type-assertions: true
+      # Report about assignment of errors to blank identifiers: `val, _ := func()`
+      check-blank: true
+      # Add json.Marshal and json.Encoder.Encode to the defaults, as they're covered by errchkjson
+      exclude-functions:
+        - io/ioutil.ReadFile
+        - io.Copy(*bytes.Buffer)
+        - io.Copy(os.Stdout)
+        - encoding/json.Marshal
+        - (*encoding/json.Encoder).Encode
+    errchkjson:
+      check-error-free-encoding: true
+
+    exhaustive:
+      # Presence of "default" case in switch statements satisfies exhaustiveness,
+      # even if all enum members are not listed.
+      default-signifies-exhaustive: true
+
+    gosec:
+      excludes:
+        - G104 # Audit errors not checked # redundant with errcheck
+        - G404 # Insecure random number source (rand) # almost always false positive
+
+    govet:
+      # Enable some checks that are disabled by default (leave the most aggressive/niche ones disabled)
+      enable:
+        - atomicalign
+        - deepequalerrors
+        - nilness
+        - reflectvaluecompare
+        - sortslice
+        - timeformat
+        - unusedwrite
+
+    grouper:
+      # Require the use of grouped global 'const' declarations.
+      const-require-grouping: true
+      # Require the use of a single 'import' declaration only.
+      import-require-single-import: true
+
+    nlreturn:
+      # Allow functions up to three lines to not respect this rule
+      block-size: 2
+
+    nolintlint:
+      # usage of //nolint:... should:
+      #  - be relevant
+      allow-unused: false
+      #  - indicate what linter is being targeted
+      require-specific: true
+      #  - include an explanation why
+      require-explanation: true
+
+    revive:
+      # enable reasonable rules except where it's covered by another linter
+      rules:
+        - name: argument-limit
+          disabled: false
+          arguments: [5]
+        - name: atomic
+        - name: blank-imports
+        - name: bool-literal-in-expr
+        - name: confusing-results
+        - name: constant-logical-expr
+        - name: context-as-argument
+        - name: context-keys-type
+        - name: datarace
+        - name: deep-exit
+        - name: defer
+        - name: duplicated-imports
+        - name: early-return
+        - name: empty-block
+        - name: empty-lines
+        - name: error-naming
+        - name: error-return
+        - name: errorf
+        - name: filename-format
+        - name: flag-parameter
+        - name: forbidden-call-in-wg-go
+        - name: function-result-limit
+        - name: get-return
+        - name: identical-branches
+        - name: identical-ifelseif-branches
+        - name: identical-switch-branches
+        - name: identical-switch-conditions
+        - name: if-return
+        - name: inefficient-map-lookup
+        - name: import-alias-naming
+        - name: import-shadowing
+        - name: increment-decrement
+        - name: indent-error-flow
+        - name: receiver-naming
+        - name: redefines-builtin-id
+        - name: redundant-import-alias
+        - name: string-of-int
+        - name: struct-tag
+        - name: superfluous-else
+        - name: time-equal
+        - name: time-naming
+        - name: unconditional-recursion
+        - name: unnecessary-if
+        - name: unnecessary-format
+        - name: unnecessary-stmt
+        - name: unreachable-code
+        - name: use-errors-new
+        - name: useless-break
+        - name: var-declaration
+        - name: waitgroup-by-value
+
+    rowserrcheck:
+      # database/sql is checked by default. Also check sqlx.
+      packages:
+        - github.com/jmoiron/sqlx
+
+    staticcheck:
+      # check all rules except:
+      # - ST1000: the "package comments" rule. Usually just results in "package thing does thing" comments.
+      # - QF1001: this almost always seems to suggest a harder-to-read alternative. Micro-optimizations from shortcircuiting are usually not worth it.
+      checks: 
+      - "all"
+      - "-ST1000"
+      - "-QF1001"
+      initialisms: [
+        # standard initialisms
+        "ACL", "API", "ASCII", "CPU", "CSS", "DNS", "EOF", "GUID", "HTML", "HTTP", "HTTPS", "ID", "IP", "JSON", "QPS", "RAM", "RPC", "SLA", "SMTP", "SQL", "SSH", "TCP", "TLS", "TTL", "UDP", "UI", "GID", "UID", "UUID", "URI", "URL", "UTF8", "VM", "XML", "XMPP", "XSRF", "XSS", "SIP", "RTP", "AMQP", "DB", "TS"
+      ]
+
+    usetesting:
+      # enable all the rules
+      os-create-temp: true
+      os-mkdir-temp: true
+      os-setenv: true
+      os-temp-dir: true
+      os-chdir: true
+      context-background: true
+      context-todo: true
+
+  exclusions:
+    # don't lint generated files.
+    generated: strict
+    # ignore anything under these paths.
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+    rules:
+      # don't be as strict with tests, mostly for style or things that don't matter in tests (performance etc)
+      - linters:
+          - bodyclose
+          - dupl # Tests are often long and repetitive, and that's typically not undesirable
+          - gocognit
+          - goconst
+          - gosec
+          - unparam
+        path: _test\.go
+      # allow "globals" in files named _export_test.go. The point of these files is to "export" unexported values for tests.
+      - linters:
+        - gochecknoglobals
+        path: _export_test\.go
+
+  # Disable all linters - we don't want to include any new defaults added by golangci-lint without evaluating them.
+  default: none
+  enable:
+    ### BUG CATCHERS
+    # These are intended to catch specific bugs. See the documentation for each for examples.
+    - asasalint                 # check for passing []any instead of any...
+    - asciicheck                # can help find hard-to-notice characters from copy/pasting
+    - bidichk                   # can help find impossible-to-notice characters from copy/pasting
+    - bodyclose                 # make sure http request bodies are closed
+    - canonicalheader           # make sure we're using the canonical header when calling http.Header
+    - contextcheck              # detect whether contexts are being passed correctly
+    - durationcheck             # check for accidentally multiplying durations together
+    - errcheck                  # find unchecked errors
+    - errchkjson                # complement to errcheck; knows when it's safe to ignore errors from json.Marshal
+    - errorlint                 # requires errors are checked with errors.Is/As and that errors are wrapped properly
+    - exhaustive                # requires that all enum values are checked in switch statements
+    - fatcontext                # detects nested context assignments (potential perf issue)
+    - gocheckcompilerdirectives # find easily-missable mistakes in go compiler directives that cause them to fail
+    - gosec                     # check for security issues
+    - govet                     # find potential common issues
+    - iotamixing                # finds nasty bugs relating to unintuitive iota behaviour
+    - makezero                  # find potential issues from initializing slices with non-zero length then using append
+    - musttag                   # require that structs used in (un)marshaling have struct tags
+    - nilerr                    # detect code that returns nil when an err checks as non-nil (and vice-versa)
+    - nilnesserr                # detect code that checks the error, but returns the wrong one (https://github.com/alingse/nilnesserr?tab=readme-ov-file#case)
+    - noctx                     # require http requests have contexts
+    - nosprintfhostport         # don't join host/port with ':' since that fails for ipv6 addresses
+    - predeclared               # detect code that overrides built-in identifiers which can cause hard-to-find bugs
+    - reassign                  # check that package-level sentinel errors (declared as var) are not reassigned
+    - recvcheck                 # check that all receivers are either value or pointer
+    - rowserrcheck              # check that rows.Err is checked
+    - sqlclosecheck             # check that sql.Rows etc are closed
+    - wastedassign              # find when assignments are unused
+    # - canonical               # not documented well enough
+    # - forcetypeassert         # redundant with errcheck
+    # - gochecksumtype          # requires manual action, hard to explain
+    # - ineffassign             # redundant with wastedassign
+    ### STYLE
+    # These are more subjective, aimed at making our code style more consistent and readable.
+    - containedctx             # makes sure contexts don't end up in structs: https://go.dev/blog/context-and-structs
+    - copyloopvar              # pre-go1.22, lines like `i := i` were common because of old loop variable behaviour. detect these as they're not needed now.
+    - dogsled                  # find too many blank identifiers: _, _, _, a := f()
+    - dupl                     # find functions that are basically copy/pasted
+    - errname                  # requires ErrXXX for sentinel errors and XXXError for error types
+    - embeddedstructfieldcheck # requires that embedded structs are at the top and visibly separated, for clarity
+    - exptostd                 # check for imports from golang.org/x/exp/ (experiments) that have been moved to the standard library
+    - forbidigo                # prevent fmt.Println etc in production code
+    - gochecknoglobals         # no globals! exceptions allowed.
+    - gochecknoinits           # no init() functions! exceptions allowed.
+    - gocognit                 # report functions that are high complexity
+    - goconst                  # find repeated values that could be constants
+    - godot                    # check for comment formatting (must end with period)
+    - goprintffuncname         # require that functions that look like printf are suffixed with "f"
+    - grouper                  # require that constants and imports are always grouped
+    - intrange                 # find for loops that could be simplified
+    - mirror                   # avoid unnecessary string/byte conversions
+    - modernize                # use newer language features
+    - nakedret                 # disallow naked returns in longer functions
+    - nilnil                   # disallow returning nil, nil where the second value is an error - use a sentinel error
+    - nlreturn                 # require some extra whitespace for clarity
+    - nolintlint               # check lint exceptions are thought through
+    - tagliatelle              # require consistent struct tags
+    - testifylint              # verify correct usage of testify (assert+require)
+    - testpackage              # enforces that tests use a separate package
+    - thelper                  # require that test helpers call t.Helper
+    - tparallel                # check for correct usage of t.Parallel
+    - unconvert                # check for opportunities to simplify by removing unnecessary type conversions
+    - unparam                  # check for unused function parameters
+    - unused                   # find unused consts, vars, fns, and types
+    - usestdlibvars            # find opportunities to use standard library variables (like http response codes)
+    - usetesting               # find opportunities to use standard library testing features (e.g. t.Context)
+    - whitespace               # detect unnecessary whitespace
+    # - cyclop                 # redundant-ish with gocognit (uses cyclomatic complexity)
+    # - decorder               # too many reasons to go off-script on this one
+    # - depguard               # not typically needed for non-govt code
+    # - dupword                # low value; can false-positive because of how English works
+    # - gocyclo                # redundant-ish with gocognit (uses cyclomatic complexity)
+    # - godoc-lint             # too opinionated about docs
+    # - maintidx               # similar to gocognit, but harder to understand (and detailed docs are Japanese only)
+    # - nestif                 # redundant with gocognit
+    # - err113                 # overkill; requires predefining all errors
+    # - exhaustruct            # developing with useful zero values makes this false positive too much
+    # - funcorder              # too many reasons to go off-script with this one
+    # - funlen                 # BORDERLINE. hard to align on generally useful value; I prefer the complexity metrics
+    # - godox                  # requires no TODO/FIXME/etc. good goal but impossible in practice.
+    # - goheader               # mostly required for open-sourced code that should include a license
+    # - goimports              # use gci instead
+    # - gomoddirectives        # these are usually included for a reason
+    # - gomodguard             # similar to depguard; not typically needed for non-govt code
+    # - iface                  # controversial; can enable if aligned on philosophy (see also ireturn)
+    # - importas               # needs too much configuration
+    # - inamedparam            # interface parameters being unnamed is often fine. e.g. context.Context
+    # - interfacebloat         # find interfaces that are too large (and therefore are weak abstractions). Useful, but impractical.
+    # - ireturn                # see iface
+    # - misspell               # causes too many fights between US/UK English speakers
+    # - mnd                    # like goconst, but more annoying
+    # - nonamedreturns         # redundant with nakedret
+    # - paralleltest           # redundant with tparallel
+    # - perfsprint             # very minor perf improvements at the cost of readability
+    # - prealloc               # this is almost always a premature optimization, even the docs say so
+    # - tagalign               # aligns struct tags with multiple values; usually not that helpful for readability
+    # - testableexamples       # more for libraries, and subjective at that
+    # - unqueryvet             # looks for "SELECT *" but there's a lot of discussion to be had about that topic...
+    # - varnamelen             # too prescriptive (generally good advice, but there are many good exceptions)
+    # - wrapcheck              # sometimes small functions can return unwrapped errors and that's fine
+    # - wsl_v5                 # very prescriptive and errors are not clear; nlreturn and whitespace are sufficient
+    ### METALINTERS
+    # These linters bundle multiple rules together. See the configuration for details.
+    - revive
+    - staticcheck
+    ### LINTERS FOR TOOLS/ETC
+    # These can be enabled if using the library they're relevant to
+    # - arangolint        # arangodb
+    # - ginkgolinter      # ginkgo, gomega
+    # - gosmopolitan      # finds i18n/l10n issues
+    # - loggercheck       # kitlog,klog,logr,slog,zap
+    # - promlinter        # prometheus directly
+    # - protogetter       # protobuf
+    # - spancheck         # OT/census directly
+    # - sloglint          # slog
+    # - zerologlint       # zerolog
+
+formatters:
+  enable:
+    - gci     # enforce a standard import order
+    - gofmt   # check for common formatting errors
+    - gofumpt # check for less common formatting errors
+
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(gitlab.com/myorg)
+
+    gofmt:
+      simplify: true
+      # Require `any` instead of `interface{}`
+      rewrite-rules:
+        - pattern: interface{}
+          replacement: any
+
+    gofumpt:
+      # Use extra rules - complain about (x string, y string)
+      extra-rules: true
+
+  exclusions:
+    # don't lint generated files.
+    generated: strict
+    # ignore anything under these paths.
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

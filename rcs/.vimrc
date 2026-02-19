@@ -9,6 +9,7 @@ Plugin 'gmarik/Vundle.vim'
 "themes and schemes
 Plugin 'sjl/badwolf'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'nordtheme/vim'
 
 "tools and addons
 Plugin 'w0rp/ale'
@@ -47,6 +48,12 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'rodjek/vim-puppet'
 Plugin 'uarun/vim-protobuf'
+" Plugin 'williamboman/mason.nvim'
+Plugin 'OmniSharp/omnisharp-vim'
+" Plugin 'Decodetalkers/csharpls-extended-lsp.nvim'
+Plugin 'jlcrochet/vim-cs'
+Plugin 'rust-lang/rust.vim'
+
 
 call vundle#end()
 
@@ -70,6 +77,7 @@ set softtabstop=4
 set autoindent
 set smartindent
 set nowrap
+set relativenumber
 
 "there are a lot of these... i should probably make a list
 autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 tabstop=2
@@ -92,7 +100,8 @@ set mouse=
 
 set wildignore+=*.pyc,__pycache__,tmp,__vendor
 
-silent! colorscheme badwolf
+" silent! colorscheme badwolf
+silent! colorscheme nord
 
 " this is great, but it makes syntax impossible to read after 80 chars.
 " especially problematic when reading other people's code.
@@ -220,8 +229,10 @@ let g:ag_default_window_type='l' " use location list instead of quickfix window
 """ ale config
 let g:ale_linters = {
 \   'go': ['gobuild', 'gofmt', 'golangci-lint'],
+\   'cs': ['OmniSharp']
 \}
-let g:ale_go_golangci_lint_options = ""
+" let g:ale_go_gobuild_options = "-tags=integration,apptest,e2e,apitest"
+" let g:ale_go_gopls_options="-tags=apptest,integration"
 let g:ale_go_golangci_lint_package=1
 
 if has('nvim')
@@ -266,6 +277,7 @@ if has('nvim')
     " nmap <silent> <F4> :TestFile<CR>
     tnoremap <Esc> <C-\><C-n>
     let g:go_term_enabled = 1
+    let g:go_term_reuse = 1
     let g:go_term_mode = "split"
 else
     " let g:syntastic_always_populate_loc_list = 1
@@ -277,7 +289,8 @@ endif
 let g:go_list_type = "location"
 let g:go_list_type_commands = {"GoTest": "quickfix", "GoTestFunc": "quickfix"}
 " let g:go_auto_type_info = 0
-let g:go_fmt_command='goimports'
+let g:go_fmt_command='gopls'
+let g:go_gopls_gofumpt=1
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
@@ -299,8 +312,11 @@ nmap <F8> :GoTestFunc<CR>
 
 let g:go_def_mapping_enabled = 0
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-css', 'coc-go']
+" let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-css', 'coc-go']
+let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-css']
 
 "deoplete conf
 let g:deoplete#enable_at_startup = 1
@@ -311,6 +327,22 @@ set completeopt=menu,menuone
 " let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 " let g:deoplete#sources#go#use_cache = 1
 " let g:deoplete#sources#go#json_directory = '/path/to/data_dir'
+
+" let g:OmniSharp_server_use_mono = 1
+let g:OmniSharp_server_use_net6 = 1
+
+augroup omnisharp_commands
+  autocmd!
+
+  autocmd FileType cs nmap <silent> <buffer> gd <Plug>(omnisharp_go_to_definition)
+  autocmd FileType cs nmap <silent> <buffer> gy <Plug>(omnisharp_go_to_type_definition)
+  autocmd FileType cs nmap <silent> <buffer> gi <Plug>(omnisharp_find_implementations)
+  autocmd FileType cs nmap <silent> <buffer> gr <Plug>(omnisharp_find_usages)
+  autocmd FileType cs nmap <silent> <buffer> K  <Plug>(omnisharp_documentation)
+  autocmd FileType cs nmap <silent> <buffer> <leader>f <Plug>(omnisharp_code_format)
+  autocmd FileType cs nmap <silent> <buffer> <leader>ac <Plug>(omnisharp_code_actions)
+  autocmd FileType cs nmap <silent> <buffer> <leader>re <Plug>(omnisharp_rename)
+augroup END
 
 """ folding conf
 set foldmethod=indent

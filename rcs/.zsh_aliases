@@ -13,6 +13,7 @@ alias reality="cd \$(realpath .)"
 alias :q="exit"
 alias tree='tree -I "$(paste -d\| -s ~/.treeignore)"'
 alias serve="python3 -m http.server 8080"
+alias add="awk '{s+=\$1} END {print s}'"
 
 if [ -e ~/.zsh_aliases.local ]; then
     source ~/.zsh_aliases.local
@@ -25,3 +26,5 @@ if [[ `uname -s` == "Darwin" ]]; then
 else
     alias open="xdg-open"
 fi
+
+alias cleandocker="docker system prune -af --filter='until=2h'"

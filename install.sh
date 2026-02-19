@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # I thought about using puppet or chef or something, but that seems like
 # an insanely heavy dependency for something this small.
@@ -47,11 +47,13 @@ do
     green "  - Successfully installed $f"
 done
 
-# couple additional ones for nvim that aren't in $(HOME)
+# couple additional ones that aren't in $(HOME)
 mkdir -p ~/.config/nvim
-declare -A special_symlinks=( [~/.config/nvim/init.vim]=~/.vimrc [~/.config/nvim/coc-settings.json]=$(pwd)/rcs_special/coc-settings.json )
+mkdir -p ~/.config/tmux-powerline/themes
+mkdir -p ~/.config/tmux-powerline/segments
+declare -A special_symlinks=( [~/.config/nvim/init.vim]=~/.vimrc, [~/.config/nvim/coc-settings.json]=$(pwd)/rcs_special/coc-settings.json, [~/.config/tmux-powerline/config.sh]=$(pwd)/rcs_special/tmux-powerline-config.sh [~/.config/tmux-powerline/themes/hatcrab.sh]=$(pwd)/rcs_special/hatcrab-theme.sh, [~/.config/tmux-powerline/segments/ssid.sh]=$(pwd)/rcs_special/tmux-ssid.sh )
 
-for f in "${!special_symlinks[@]}"; do
+for f in ${!special_symlinks[@]}; do
     cyan " - Installing $f"
     if [ -s $f ]; then
         if [ -h $f ]; then
@@ -64,7 +66,7 @@ for f in "${!special_symlinks[@]}"; do
         fi
         # TODO: maybe prompt to move?
         mv -n $f $f.local
-        cyan "  - Moved existing file ~/$f to ~/$f.local"
+        cyan "  - Moved existing file $f to $f.local"
     fi
     ln -s ${special_symlinks[$f]} $f
     green "  - Successfully installed $f"
@@ -130,5 +132,16 @@ else
 fi
 vim +BundleInstall +qall
 echo
+
+cyanbold "Installing tpm"
+if [ -s ~/.tmux/plugins/tpm ]; then
+    cyan "  - TPM found"
+else
+    cyan "  - Installing TPM"
+    mkdir -p ~/.tmux/plugins
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+echo
+
 
 green "All done!"

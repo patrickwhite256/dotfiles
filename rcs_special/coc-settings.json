@@ -8,18 +8,22 @@
     "html",
     "css",
     "scss",
-    "go"
+    "go",
+    "cs"
   ],
   "diagnostic.checkCurrentLine": true,
   "languageserver": {
     "golang": {
       "command": "gopls",
+      "settings": {
+        "buildFlags": ["-tags=integration"]
+      },
       "rootPatterns": ["go.mod"],
-      "filetypes": ["go"]
+      "filetypes": ["verynotgo"]
     },
     "golangci-lint-languageserver": {
       "command": "golangci-lint-languageserver",
-      "filetypes": ["go"],
+      "filetypes": ["notgo"],
       "initializationOptions": {
         "command": [
           "golangci-lint",
@@ -29,9 +33,19 @@
           "--issues-exit-code=1"
         ]
       }
+    },
+    "csharp-ls": {
+      "command": "csharp-ls",
+      "filetypes": ["notcs"],
+      "rootPatterns": ["*.csproj", ".vim/", ".git/", ".hg/"]
     }
   },
   "go.goplsOptions": {
-    "staticcheck": true
+    "staticcheck": false,
+    "buildFlags": ["-tags=apptest,integration,apitest"]
+  },
+  "go.goplsPath": "/Users/patrick.white/go/bin/gopls",
+  "go.goplsEnv": {
+    "GOFLAGS": "-tags=apptest,integration,apitest"
   }
 }

@@ -28,6 +28,7 @@ if ! zgen saved; then
     zgen load $DOTFILES_DIR/zsh/is
     zgen load $DOTFILES_DIR/zsh/switch-project
     zgen load $DOTFILES_DIR/zsh/change-terraform
+    zgen load $DOTFILES_DIR/zsh/parse-token
 
     zgen load romkatv/powerlevel10k powerlevel10k
 

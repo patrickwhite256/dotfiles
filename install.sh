@@ -51,7 +51,7 @@ done
 mkdir -p ~/.config/nvim
 mkdir -p ~/.config/tmux-powerline/themes
 mkdir -p ~/.config/tmux-powerline/segments
-declare -A special_symlinks=( [~/.config/nvim/init.vim]=~/.vimrc, [~/.config/nvim/coc-settings.json]=$(pwd)/rcs_special/coc-settings.json, [~/.config/tmux-powerline/config.sh]=$(pwd)/rcs_special/tmux-powerline-config.sh [~/.config/tmux-powerline/themes/hatcrab.sh]=$(pwd)/rcs_special/hatcrab-theme.sh, [~/.config/tmux-powerline/segments/ssid.sh]=$(pwd)/rcs_special/tmux-ssid.sh )
+declare -A special_symlinks=( [~/.config/nvim/init.vim]=~/.vimrc, [~/.config/nvim/coc-settings.json]=$(pwd)/rcs_special/coc-settings.json, [~/.config/tmux-powerline/config.sh]=$(pwd)/rcs_special/tmux-powerline-config.sh [~/.config/tmux-powerline/themes/hatcrab.sh]=$(pwd)/rcs_special/hatcrab-theme.sh, [~/.config/tmux-powerline/segments/ssid.sh]=$(pwd)/rcs_special/tmux-ssid.sh, [~/.config/ghostty/config.ghostty]=$(pwd)/rcs_special/config.ghostty )
 
 for f in ${!special_symlinks[@]}; do
     cyan " - Installing $f"

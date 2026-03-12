@@ -1,0 +1,7 @@
+theme = Nord
+font-family = InconsolataGo Nerd Font Mono
+font-size = 10
+font-thicken = true
+cursor-style = block
+window-decoration = false
+link-url = true

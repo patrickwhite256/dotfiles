@@ -88,6 +88,7 @@ autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType yaml setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType json setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType typescript setlocal shiftwidth=2 softtabstop=2 tabstop=2
+autocmd FileType typescriptreact setlocal shiftwidth=2 softtabstop=2 tabstop=2
 
 set nu
 set hlsearch
@@ -316,7 +317,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-css', 'coc-go']
-let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-css']
+let g:coc_global_extensions = ['coc-json', 'coc-html', 'coc-pyright', 'coc-css', 'coc-tsserver']
 
 "deoplete conf
 let g:deoplete#enable_at_startup = 1

@@ -19,7 +19,7 @@
         "buildFlags": ["-tags=integration"]
       },
       "rootPatterns": ["go.mod"],
-      "filetypes": ["verynotgo"]
+      "filetypes": ["go"]
     },
     "golangci-lint-languageserver": {
       "command": "golangci-lint-languageserver",
@@ -44,7 +44,6 @@
     "staticcheck": false,
     "buildFlags": ["-tags=apptest,integration,apitest"]
   },
-  "go.goplsPath": "/Users/patrick.white/go/bin/gopls",
   "go.goplsEnv": {
     "GOFLAGS": "-tags=apptest,integration,apitest"
   }
